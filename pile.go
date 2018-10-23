@@ -78,22 +78,69 @@ func (z *Pile) RetrieveCardsInPile() (cards []*Card) {
 }
 
 func (z *Pile) PickAmountOfCardsFromBottomOfPile(amount int) *Draw {
-	if amount == 0 {
-		return &Draw{
-			Success: false,
-		}
+	draw := &Draw{
+		Success:   false,
+		Cards:     make([]*Card, 0),
+		Remaining: 0,
 	}
-	return nil
+
+	if amount <= 0 {
+		return draw
+	}
+
+	if amount >= len(z.stack) {
+		amount = len(z.stack)
+	}
+
+	for i, stackObject := range z.stack[len(z.stack)-amount-1:] {
+		draw.Cards = append(draw.Cards, stackObject.card)
+		z.stack = append(z.stack[:i], z.stack[i+1:]...)
+	}
+
+	draw.Remaining = len(draw.Cards)
+
+	return draw
 }
 
 func (z *Pile) PickAmountOfCardsFromTopOfPile(amount int) *Draw {
-	return nil
+	draw := &Draw{
+		Success:   false,
+		Cards:     make([]*Card, 0),
+		Remaining: 0,
+	}
+
+	if amount <= 0 {
+		return draw
+	}
+
+	if amount >= len(z.stack) {
+		amount = len(z.stack)
+	}
+
+	for i, stackObject := range z.stack {
+		draw.Cards = append(draw.Cards, stackObject.card)
+		z.stack = append(z.stack[:i], z.stack[i+1:]...)
+	}
+
+	draw.Remaining = len(draw.Cards)
+
+	return draw
 }
 
 func (z *Pile) PickAllCardsFromPile() *Draw {
-	return nil
+	draw := &Draw{
+		Success:   false,
+		Cards:     make([]*Card, 0),
+		Remaining: 0,
+	}
+	return
 }
 
 func (z *Pile) GetCardsFromPile(cards []*Card) *Draw {
+	draw := &Draw{
+		Success:   false,
+		Cards:     make([]*Card, 0),
+		Remaining: 0,
+	}
 	return nil
 }
