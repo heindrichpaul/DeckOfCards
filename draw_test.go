@@ -33,11 +33,6 @@ func TestMarshallingOfDraw(t *testing.T) {
 		t.FailNow()
 	}
 
-	if newDraw.DeckID != draw.DeckID {
-		t.Logf("The DeckID property of the draws do not match.\n")
-		t.FailNow()
-	}
-
 	if newDraw.Remaining != draw.Remaining {
 		t.Logf("The Remaining property of the draws do not match.\n")
 		t.FailNow()

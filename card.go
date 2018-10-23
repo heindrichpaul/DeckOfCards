@@ -7,11 +7,12 @@ import (
 )
 
 type Card struct {
-	Image string `json:"image"`
-	Value string `json:"value"`
-	Suit  string `json:"suit"`
-	Code  string `json:"code"`
-	drawn bool
+	Image  string `json:"image"`
+	Value  string `json:"value"`
+	Suit   string `json:"suit"`
+	Code   string `json:"code"`
+	DeckID string `json:"deckId"`
+	drawn  bool
 }
 
 type cardError struct {
@@ -20,17 +21,22 @@ type cardError struct {
 	suit  string
 }
 
-func newCard(value, suit string) (card *Card, err error) {
+func newCard(deckId, value, suit string) (card *Card, err error) {
 
 	values := regexp.MustCompile(`[2-9]|0|A|K|Q|J|\*`)
 	suites := regexp.MustCompile(`S|D|C|H|\*`)
 
+	if strings.EqualFold(deckId, "") {
+		return nil, err
+	}
+
 	card = &Card{
-		Code:  "",
-		Image: "",
-		Value: "",
-		Suit:  "",
-		drawn: false,
+		DeckID: deckId,
+		Code:   "",
+		Image:  "",
+		Value:  "",
+		Suit:   "",
+		drawn:  false,
 	}
 
 	if !suites.MatchString(suit) {
