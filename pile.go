@@ -133,6 +133,14 @@ func (z *Pile) PickAllCardsFromPile() *Draw {
 		Cards:     make([]*Card, 0),
 		Remaining: 0,
 	}
+	if len(z.stack) > 0 {
+		draw.Success = true
+		draw.Remaining = len(z.stack)
+		for _, stackObject := range z.stack {
+			draw.Cards = append(draw.Cards, stackObject.card)
+		}
+	}
+	z.stack = make([]*pileObject, 0)
 	return draw
 }
 
@@ -141,6 +149,29 @@ func (z *Pile) GetCardsFromPile(cards []*Card) *Draw {
 		Success:   false,
 		Cards:     make([]*Card, 0),
 		Remaining: 0,
+	}
+	if len(z.stack) > 0 && len(cards) <= len(z.stack) {
+		var tempCards []*Card
+		for _, card := range cards {
+			for _, stackObject := range z.stack {
+				if strings.EqualFold(stackObject.card.Suit, card.Suit) && strings.EqualFold(stackObject.card.Value, card.Value) {
+					tempCards = append(tempCards, stackObject.card)
+				}
+			}
+		}
+		for _, card := range cards {
+			for i, stackObject := range z.stack {
+				if strings.EqualFold(stackObject.card.Suit, card.Suit) && strings.EqualFold(stackObject.card.Value, card.Value) {
+					z.stack = append(z.stack[:i], z.stack[i+1:]...)
+				}
+			}
+		}
+		if len(cards) == len(tempCards) {
+			draw.Success = true
+			draw.Remaining = len(cards)
+			draw.Cards = tempCards
+		}
+
 	}
 	return draw
 }
