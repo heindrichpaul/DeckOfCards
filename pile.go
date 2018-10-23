@@ -133,7 +133,7 @@ func (z *Pile) PickAllCardsFromPile() *Draw {
 		Cards:     make([]*Card, 0),
 		Remaining: 0,
 	}
-	return
+	return draw
 }
 
 func (z *Pile) GetCardsFromPile(cards []*Card) *Draw {
@@ -142,5 +142,5 @@ func (z *Pile) GetCardsFromPile(cards []*Card) *Draw {
 		Cards:     make([]*Card, 0),
 		Remaining: 0,
 	}
-	return nil
+	return draw
 }
