@@ -9,27 +9,29 @@ import (
 	"time"
 )
 
+const TestDECKID = "TEST_ID"
+
 func TestNewCard(t *testing.T) {
 
 	var suits = [...]string{"S", "D", "C", "H"}
 	for _, suit := range suits {
 		for i := 2; i < 10; i++ {
-			cardCreatorHelper(suit, strconv.Itoa(i), t)
+			cardCreatorHelper(TestDECKID, suit, strconv.Itoa(i), t)
 		}
 
-		cardCreatorHelper(suit, "0", t)
-		cardCreatorHelper(suit, "A", t)
-		cardCreatorHelper(suit, "K", t)
-		cardCreatorHelper(suit, "Q", t)
-		cardCreatorHelper(suit, "J", t)
+		cardCreatorHelper(TestDECKID, suit, "0", t)
+		cardCreatorHelper(TestDECKID, suit, "A", t)
+		cardCreatorHelper(TestDECKID, suit, "K", t)
+		cardCreatorHelper(TestDECKID, suit, "Q", t)
+		cardCreatorHelper(TestDECKID, suit, "J", t)
 	}
 
-	cardCreatorHelper("*", "*", t)
+	cardCreatorHelper(TestDECKID, "*", "*", t)
 }
 
-func cardCreatorHelper(suit, value string, t *testing.T) {
+func cardCreatorHelper(deckId, suit, value string, t *testing.T) {
 	t.Log("Now running " + fmt.Sprintf("%s%s", value, suit) + ": " + time.Now().String())
-	card, err := newCard(value, suit)
+	card, err := newCard(deckId, value, suit)
 	if err != nil {
 		t.Logf("Failed to create card for: %s%s\n", value, suit)
 		t.FailNow()
@@ -126,7 +128,7 @@ func TestNewCardWithInvalidSuit(t *testing.T) {
 	suit := ""
 	value := "0"
 	expectedError := fmt.Sprintf("Card suit (%s), value (%s): invalid suit.", suit, value)
-	card, err := newCard(value, suit)
+	card, err := newCard(TestDECKID, value, suit)
 	if card == nil {
 		if !strings.EqualFold(err.Error(), expectedError) {
 			t.Logf("expected:[%s] but received:[%s]\n", expectedError, err.Error())
@@ -139,7 +141,7 @@ func TestNewCardWithInvalidValue(t *testing.T) {
 	suit := "S"
 	value := "^"
 	expectedError := fmt.Sprintf("Card suit (%s), value (%s): invalid value.", suit, value)
-	card, err := newCard(value, suit)
+	card, err := newCard(TestDECKID, value, suit)
 	if card == nil {
 		if !strings.Contains(err.Error(), expectedError) {
 			t.Logf("expected:[%s] but received:[%s]\n", expectedError, err.Error())
@@ -149,7 +151,7 @@ func TestNewCardWithInvalidValue(t *testing.T) {
 }
 
 func TestCardString(t *testing.T) {
-	card, err := newCard("*", "*")
+	card, err := newCard(TestDECKID, "*", "*")
 	if err != nil {
 		t.Logf("Failed to create card: %s\n", err.Error())
 		t.FailNow()
@@ -162,7 +164,7 @@ func TestCardString(t *testing.T) {
 }
 
 func TestDraw(t *testing.T) {
-	card, err := newCard("*", "*")
+	card, err := newCard(TestDECKID, "*", "*")
 	if err != nil {
 		t.Logf("Failed to create card: %s\n", err.Error())
 		t.FailNow()

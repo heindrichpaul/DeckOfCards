@@ -44,8 +44,8 @@ func TestNewDeckWithNegativeNumber(t *testing.T) {
 		t.Logf("Deck not properly initialized. Expected zero cards as it failed do create a deck\n")
 		t.FailNow()
 	}
-	if !strings.EqualFold(deck.DeckID, "") {
-		t.Logf("Deck not properly initialized. Expected an empty DeckID\n")
+	if strings.EqualFold(deck.DeckID, "") {
+		t.Logf("Deck not properly initialized. Expected a non empty DeckID\n")
 		t.FailNow()
 	}
 	if deck.Shuffled {
@@ -122,8 +122,8 @@ func TestNewDeckWithJockerWithNegativeNumber(t *testing.T) {
 		t.Logf("Deck not properly initialized. Expected zero cards as it failed do create a deck\n")
 		t.FailNow()
 	}
-	if !strings.EqualFold(deck.DeckID, "") {
-		t.Logf("Deck not properly initialized. Expected an empty DeckID\n")
+	if strings.EqualFold(deck.DeckID, "") {
+		t.Logf("Deck not properly initialized. Expected a non empty DeckID\n")
 		t.FailNow()
 	}
 	if deck.Shuffled {
@@ -217,10 +217,6 @@ func TestDrawWithValidNumber(t *testing.T) {
 		t.Logf("The draw reports it was not successful\n")
 		t.FailNow()
 	}
-	if !strings.EqualFold(draw.DeckID, deck.DeckID) {
-		t.Logf("The draw's DeckID and the deck's ID does not match.\n")
-		t.FailNow()
-	}
 	if draw.Remaining != deck.Remaining {
 		t.Logf("The draw's Remaining and the deck's Remaining cards does not match.\n")
 		t.FailNow()
@@ -245,10 +241,6 @@ func TestDrawWithMoreThanRemainingNumberOfCards(t *testing.T) {
 		t.Logf("The draw reports it was not successful\n")
 		t.FailNow()
 	}
-	if !strings.EqualFold(draw.DeckID, deck.DeckID) {
-		t.Logf("The draw's DeckID and the deck's ID does not match.\n")
-		t.FailNow()
-	}
 	if draw.Remaining != deck.Remaining {
 		t.Logf("The draw's Remaining and the deck's Remaining cards does not match.\n")
 		t.FailNow()
@@ -271,10 +263,6 @@ func TestDrawWithNoMoreCardsRemaining(t *testing.T) {
 	}
 	if draw.Success {
 		t.Logf("The draw reports it was successful but it should be unsuccessful.\n")
-		t.FailNow()
-	}
-	if !strings.EqualFold(draw.DeckID, deck.DeckID) {
-		t.Logf("The draw's DeckID and the deck's ID does not match.\n")
 		t.FailNow()
 	}
 	if draw.Remaining != deck.Remaining {

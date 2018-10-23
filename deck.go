@@ -68,7 +68,7 @@ func NewDeckWithJockers(amount int) *Deck {
 
 func newDeck(amount int, jockers bool) (deck *Deck, err error) {
 	deck = &Deck{
-		DeckID:    "",
+		DeckID:    uuid.NewV4().String(),
 		Success:   false,
 		Shuffled:  false,
 		Remaining: 0,
@@ -78,7 +78,7 @@ func newDeck(amount int, jockers bool) (deck *Deck, err error) {
 	for deckNum := 0; deckNum < amount; deckNum++ {
 		for _, suit := range suits {
 			//ACE
-			card, err := newCard("A", suit)
+			card, err := newCard(deck.DeckID, "A", suit)
 			if err != nil {
 				return nil, err
 			}
@@ -86,44 +86,44 @@ func newDeck(amount int, jockers bool) (deck *Deck, err error) {
 			deck.Remaining++
 			//NUMERICAL CARDS
 			for i := 2; i < 10; i++ {
-				card, err = newCard(strconv.Itoa(i), suit)
+				card, err = newCard(deck.DeckID, strconv.Itoa(i), suit)
 				if err == nil {
 					deck.cards = append(deck.cards, card)
 					deck.Remaining++
 				}
 			}
 			//TEN
-			card, err = newCard("0", suit)
+			card, err = newCard(deck.DeckID, "0", suit)
 			if err == nil {
 				deck.cards = append(deck.cards, card)
 				deck.Remaining += 1
 			}
 			//JACK
-			card, err = newCard("J", suit)
+			card, err = newCard(deck.DeckID, "J", suit)
 			if err == nil {
 				deck.cards = append(deck.cards, card)
 				deck.Remaining += 1
 			}
 			//QUEEN
-			card, err = newCard("Q", suit)
+			card, err = newCard(deck.DeckID, "Q", suit)
 			if err == nil {
 				deck.cards = append(deck.cards, card)
 				deck.Remaining += 1
 			}
 			//KING
-			card, err = newCard("K", suit)
+			card, err = newCard(deck.DeckID, "K", suit)
 			if err == nil {
 				deck.cards = append(deck.cards, card)
 				deck.Remaining += 1
 			}
 		}
 		if jockers {
-			card, err := newCard("*", "*")
+			card, err := newCard(deck.DeckID, "*", "*")
 			if err == nil {
 				deck.cards = append(deck.cards, card)
 				deck.Remaining += 1
 			}
-			card, err = newCard("*", "*")
+			card, err = newCard(deck.DeckID, "*", "*")
 			if err == nil {
 				deck.cards = append(deck.cards, card)
 				deck.Remaining += 1
@@ -131,7 +131,6 @@ func newDeck(amount int, jockers bool) (deck *Deck, err error) {
 		}
 	}
 	if deck.Remaining == len(deck.cards) && deck.Remaining > 0 {
-		deck.DeckID = uuid.NewV4().String()
 		deck.Success = true
 		deck.Shuffled = false
 	}
@@ -161,7 +160,6 @@ func (z *Deck) Draw(amount int) (draw *Draw) {
 		Cards:     make([]*Card, 0),
 		Remaining: 0,
 		Success:   false,
-		DeckID:    z.DeckID,
 	}
 
 	if z.Remaining == 0 {

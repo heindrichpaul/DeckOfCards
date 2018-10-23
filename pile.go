@@ -13,9 +13,8 @@ type Pile struct {
 }
 
 type pileObject struct {
-	deckID      string
-	stillInPile bool
-	card        *Card
+	deckID string
+	card   *Card
 }
 
 func (z *pileObject) String() string {
@@ -41,9 +40,8 @@ func (z *Pile) AddCardsToPile(draw *Draw, cards []*Card) {
 				}
 				if found {
 					p := &pileObject{
-						deckID:      draw.DeckID,
-						stillInPile: true,
-						card:        card,
+						deckID: card.DeckID,
+						card:   card,
 					}
 					z.stack = append(z.stack, p)
 				}
@@ -65,18 +63,37 @@ func (z *Pile) ListCardsInPile() string {
 	printString = append(printString, fmt.Sprintf("PileID: %s", z.PileID))
 
 	for _, stackObject := range z.stack {
-		if !stackObject.card.drawn {
-			printString = append(printString, fmt.Sprintf("%s", stackObject))
-		}
+		printString = append(printString, fmt.Sprintf("%s", stackObject))
 	}
 
 	return strings.Join(printString, "\n")
 }
 
-func (z *Pile) PickAmountOfCardsFromPile(amount int) []*Card {
+func (z *Pile) RetrieveCardsInPile() (cards []*Card) {
+	for _, stackObject := range z.stack {
+		cards = append(cards, stackObject.card)
+	}
+
+	return
+}
+
+func (z *Pile) PickAmountOfCardsFromBottomOfPile(amount int) *Draw {
+	if amount == 0 {
+		return &Draw{
+			Success: false,
+		}
+	}
 	return nil
 }
 
-func (z *Pile) PickAllCardsFromPile() []*Card {
+func (z *Pile) PickAmountOfCardsFromTopOfPile(amount int) *Draw {
+	return nil
+}
+
+func (z *Pile) PickAllCardsFromPile() *Draw {
+	return nil
+}
+
+func (z *Pile) GetCardsFromPile(cards []*Card) *Draw {
 	return nil
 }

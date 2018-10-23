@@ -7,11 +7,12 @@ import (
 )
 
 type Card struct {
-	Image string `json:"image"`
-	Value string `json:"value"`
-	Suit  string `json:"suit"`
-	Code  string `json:"code"`
-	drawn bool
+	Image  string `json:"image"`
+	Value  string `json:"value"`
+	Suit   string `json:"suit"`
+	Code   string `json:"code"`
+	DeckID string `json:"deckId"`
+	drawn  bool
 }
 
 type cardError struct {
@@ -20,61 +21,65 @@ type cardError struct {
 	suit  string
 }
 
-func newCard(value, suit string) (card *Card, err error) {
+func newCard(deckId, value, suit string) (card *Card, err error) {
 
 	values := regexp.MustCompile(`[2-9]|0|A|K|Q|J|\*`)
 	suites := regexp.MustCompile(`S|D|C|H|\*`)
 
-	card = &Card{
-		Code:  "",
-		Image: "",
-		Value: "",
-		Suit:  "",
-		drawn: false,
-	}
+	if !strings.EqualFold(deckId, "") {
 
-	if !suites.MatchString(suit) {
-		return nil, &cardError{"invalid suit.", value, suit}
-	} else {
-		switch suit {
-		case "S":
-			card.Suit = "SPADES"
-		case "D":
-			card.Suit = "DIAMONDS"
-		case "C":
-			card.Suit = "CLUBS"
-		case "H":
-			card.Suit = "HEARTS"
-		default:
-			card.Suit = "NONE"
+		card = &Card{
+			DeckID: deckId,
+			Code:   "",
+			Image:  "",
+			Value:  "",
+			Suit:   "",
+			drawn:  false,
 		}
-	}
 
-	if !values.MatchString(value) {
-		return nil, &cardError{"invalid value.", value, suit}
-	} else {
-		switch value {
-		case "A":
-			card.Value = "ACE"
-		case "K":
-			card.Value = "KING"
-		case "Q":
-			card.Value = "QUEEN"
-		case "J":
-			card.Value = "JACK"
-		case "0":
-			card.Value = "10"
-		case "*":
-			card.Value = "JOCKER"
-		default:
-			card.Value = value
+		if !suites.MatchString(suit) {
+			return nil, &cardError{"invalid suit.", value, suit}
+		} else {
+			switch suit {
+			case "S":
+				card.Suit = "SPADES"
+			case "D":
+				card.Suit = "DIAMONDS"
+			case "C":
+				card.Suit = "CLUBS"
+			case "H":
+				card.Suit = "HEARTS"
+			default:
+				card.Suit = "NONE"
+			}
 		}
-	}
-	card.Code = fmt.Sprintf("%s%s", value, suit)
-	if !strings.EqualFold("*", value) && !strings.EqualFold("*", suit) {
-		card.Image = fmt.Sprintf("https://deckofcardsapi.com/static/img/%s.png", card.Code)
-	} else {
-		card.Image = ""
+
+		if !values.MatchString(value) {
+			return nil, &cardError{"invalid value.", value, suit}
+		} else {
+			switch value {
+			case "A":
+				card.Value = "ACE"
+			case "K":
+				card.Value = "KING"
+			case "Q":
+				card.Value = "QUEEN"
+			case "J":
+				card.Value = "JACK"
+			case "0":
+				card.Value = "10"
+			case "*":
+				card.Value = "JOCKER"
+			default:
+				card.Value = value
+			}
+		}
+		card.Code = fmt.Sprintf("%s%s", value, suit)
+		if !strings.EqualFold("*", value) && !strings.EqualFold("*", suit) {
+			card.Image = fmt.Sprintf("https://deckofcardsapi.com/static/img/%s.png", card.Code)
+		} else {
+			card.Image = ""
+		}
 	}
 
 	return

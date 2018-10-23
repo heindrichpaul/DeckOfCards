@@ -17,6 +17,5 @@ func (r *Draw) Marshal() ([]byte, error) {
 type Draw struct {
 	Success   bool    `json:"success"`
 	Cards     []*Card `json:"cards"`
-	DeckID    string  `json:"deck_id"`
 	Remaining int     `json:"remaining"`
 }
