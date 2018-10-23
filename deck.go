@@ -87,51 +87,47 @@ func newDeck(amount int, jockers bool) (deck *Deck, err error) {
 			//NUMERICAL CARDS
 			for i := 2; i < 10; i++ {
 				card, err = newCard(strconv.Itoa(i), suit)
-				if err != nil {
-					return nil, err
+				if err == nil {
+					deck.cards = append(deck.cards, card)
+					deck.Remaining++
 				}
-				deck.cards = append(deck.cards, card)
-				deck.Remaining++
 			}
 			//TEN
 			card, err = newCard("0", suit)
-			if err != nil {
-				return nil, err
+			if err == nil {
+				deck.cards = append(deck.cards, card)
+				deck.Remaining += 1
 			}
-			deck.cards = append(deck.cards, card)
 			//JACK
 			card, err = newCard("J", suit)
-			if err != nil {
-				return nil, err
+			if err == nil {
+				deck.cards = append(deck.cards, card)
+				deck.Remaining += 1
 			}
-			deck.cards = append(deck.cards, card)
 			//QUEEN
 			card, err = newCard("Q", suit)
-			if err != nil {
-				return nil, err
+			if err == nil {
+				deck.cards = append(deck.cards, card)
+				deck.Remaining += 1
 			}
-			deck.cards = append(deck.cards, card)
 			//KING
 			card, err = newCard("K", suit)
-			if err != nil {
-				return nil, err
+			if err == nil {
+				deck.cards = append(deck.cards, card)
+				deck.Remaining += 1
 			}
-			deck.cards = append(deck.cards, card)
-
-			deck.Remaining += 4
 		}
 		if jockers {
 			card, err := newCard("*", "*")
-			if err != nil {
-				return nil, err
+			if err == nil {
+				deck.cards = append(deck.cards, card)
+				deck.Remaining += 1
 			}
-			deck.cards = append(deck.cards, card)
 			card, err = newCard("*", "*")
-			if err != nil {
-				return nil, err
+			if err == nil {
+				deck.cards = append(deck.cards, card)
+				deck.Remaining += 1
 			}
-			deck.cards = append(deck.cards, card)
-			deck.Remaining += 2
 		}
 	}
 	if deck.Remaining == len(deck.cards) && deck.Remaining > 0 {
