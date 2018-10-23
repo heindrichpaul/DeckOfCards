@@ -1,1 +1,1 @@
-module github.com/heindrichpaul/DeckOfCards
+module github.com/heindrichpaul/deckOfCards
