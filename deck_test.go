@@ -255,6 +255,33 @@ func TestDrawWithMoreThanRemainingNumberOfCards(t *testing.T) {
 	}
 }
 
+func TestDrawWithNoMoreCardsRemaining(t *testing.T) {
+	deck := NewDeckWithJockers(1)
+	deck.Remaining = 0
+	remaining := deck.Remaining
+	drawAmount := remaining + 2
+	draw := deck.Draw(drawAmount)
+	if deck.Remaining != 0 {
+		t.Logf("Draw reduced the number of remaining cards by more than possible.\n")
+		t.FailNow()
+	}
+	if len(draw.Cards) != remaining {
+		t.Logf("The length of the drawn cards is not the same as the amount of remaining cards.\n")
+		t.FailNow()
+	}
+	if draw.Success {
+		t.Logf("The draw reports it was successful but it should be unsuccessful.\n")
+		t.FailNow()
+	}
+	if !strings.EqualFold(draw.DeckID, deck.DeckID) {
+		t.Logf("The draw's DeckID and the deck's ID does not match.\n")
+		t.FailNow()
+	}
+	if draw.Remaining != deck.Remaining {
+		t.Logf("The draw's Remaining and the deck's Remaining cards does not match.\n")
+		t.FailNow()
+	}
+}
 func TestDrawWithInvalidNumber(t *testing.T) {
 	deck := NewDeckWithJockers(1)
 	remaining := deck.Remaining

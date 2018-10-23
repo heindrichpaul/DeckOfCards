@@ -165,8 +165,9 @@ func (z *Deck) Draw(amount int) (draw *Draw) {
 		Cards:     make([]*Card, 0),
 		Remaining: 0,
 		Success:   false,
-		DeckID:    "",
+		DeckID:    z.DeckID,
 	}
+
 	if z.Remaining == 0 {
 		return
 	}
@@ -194,7 +195,6 @@ func (z *Deck) Draw(amount int) (draw *Draw) {
 	}
 	draw.Cards = cards
 	draw.Success = true
-	draw.DeckID = z.DeckID
 	draw.Remaining = z.Remaining
 	return
 }
