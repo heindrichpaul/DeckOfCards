@@ -1,4 +1,4 @@
-package domain
+package deckOfCards
 
 import jsoniter "github.com/json-iterator/go"
 
