@@ -1,4 +1,4 @@
-package deckOfCards
+package deckofcards
 
 import (
 	"fmt"
@@ -20,14 +20,14 @@ func UnmarshalDeck(data []byte) (*Deck, error) {
 	return &r, err
 }
 
-func (r *Deck) Marshal() ([]byte, error) {
+func (z *Deck) Marshal() ([]byte, error) {
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
-	return json.Marshal(r)
+	return json.Marshal(z)
 }
 
 type Deck struct {
 	Remaining int    `json:"remaining"`
-	DeckID    string `json:"deck_id"`
+	DeckID    string `json:"deckId"`
 	Success   bool   `json:"success"`
 	Shuffled  bool   `json:"shuffled"`
 	cards     []*Card
@@ -96,37 +96,37 @@ func newDeck(amount int, jockers bool) (deck *Deck, err error) {
 			card, err = newCard(deck.DeckID, "0", suit)
 			if err == nil {
 				deck.cards = append(deck.cards, card)
-				deck.Remaining += 1
+				deck.Remaining++
 			}
 			//JACK
 			card, err = newCard(deck.DeckID, "J", suit)
 			if err == nil {
 				deck.cards = append(deck.cards, card)
-				deck.Remaining += 1
+				deck.Remaining++
 			}
 			//QUEEN
 			card, err = newCard(deck.DeckID, "Q", suit)
 			if err == nil {
 				deck.cards = append(deck.cards, card)
-				deck.Remaining += 1
+				deck.Remaining++
 			}
 			//KING
 			card, err = newCard(deck.DeckID, "K", suit)
 			if err == nil {
 				deck.cards = append(deck.cards, card)
-				deck.Remaining += 1
+				deck.Remaining++
 			}
 		}
 		if jockers {
 			card, err := newCard(deck.DeckID, "*", "*")
 			if err == nil {
 				deck.cards = append(deck.cards, card)
-				deck.Remaining += 1
+				deck.Remaining++
 			}
 			card, err = newCard(deck.DeckID, "*", "*")
 			if err == nil {
 				deck.cards = append(deck.cards, card)
-				deck.Remaining += 1
+				deck.Remaining++
 			}
 		}
 	}

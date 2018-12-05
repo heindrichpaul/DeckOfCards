@@ -1,4 +1,4 @@
-package deckOfCards
+package deckofcards
 
 import (
 	"fmt"
@@ -27,6 +27,12 @@ func TestNewDeck(t *testing.T) {
 	if deck.Shuffled {
 		t.Logf("Deck not properly initialized. Expected an unshuffled deck\n")
 		t.FailNow()
+	}
+	for _, card := range deck.cards {
+		if !strings.EqualFold(deck.DeckID, card.DeckID) {
+			t.Logf("The card's DeckID differs from the deck it belongs to.\n")
+			t.FailNow()
+		}
 	}
 }
 

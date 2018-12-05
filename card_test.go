@@ -1,4 +1,4 @@
-package deckOfCards
+package deckofcards
 
 import (
 	"fmt"
@@ -29,9 +29,9 @@ func TestNewCard(t *testing.T) {
 	cardCreatorHelper(TestDECKID, "*", "*", t)
 }
 
-func cardCreatorHelper(deckId, suit, value string, t *testing.T) {
+func cardCreatorHelper(deckID, suit, value string, t *testing.T) {
 	t.Log("Now running " + fmt.Sprintf("%s%s", value, suit) + ": " + time.Now().String())
-	card, err := newCard(deckId, value, suit)
+	card, err := newCard(deckID, value, suit)
 	if err != nil {
 		t.Logf("Failed to create card for: %s%s\n", value, suit)
 		t.FailNow()
@@ -119,6 +119,12 @@ func cardCreatorHelper(deckId, suit, value string, t *testing.T) {
 		if resp.StatusCode != 200 {
 			t.Errorf("Unable to find image %s\n", card.Image)
 		}
+	}
+
+	if !strings.EqualFold(card.DeckID, TestDECKID) {
+		t.Logf("The DeckID is not correctly stored on the creation of a new card.\n")
+		t.FailNow()
+
 	}
 
 	t.Log("Finished running " + fmt.Sprintf("%s%s", value, suit) + ": " + time.Now().String())
