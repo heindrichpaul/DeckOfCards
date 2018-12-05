@@ -1,4 +1,4 @@
-module github.com/heindrichpaul/deckOfCards
+module github.com/heindrichpaul/deckofcards
 
 require (
 	github.com/json-iterator/go v1.1.5
