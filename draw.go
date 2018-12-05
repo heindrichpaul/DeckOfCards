@@ -1,4 +1,4 @@
-package deckOfCards
+package deckofcards
 
 import (
 	"fmt"
@@ -14,9 +14,9 @@ func UnmarshalDraw(data []byte) (*Draw, error) {
 	return r, err
 }
 
-func (r *Draw) Marshal() ([]byte, error) {
+func (z *Draw) Marshal() ([]byte, error) {
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
-	return json.Marshal(r)
+	return json.Marshal(z)
 }
 
 type Draw struct {

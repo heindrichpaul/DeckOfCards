@@ -1,4 +1,4 @@
-package deckOfCards
+package deckofcards
 
 import (
 	"fmt"
@@ -21,14 +21,14 @@ type cardError struct {
 	suit  string
 }
 
-func newCard(deckId, value, suit string) (card *Card, err error) {
+func newCard(deckID, value, suit string) (card *Card, err error) {
 	values := regexp.MustCompile(`[2-9]|0|A|K|Q|J|\*`)
 	suites := regexp.MustCompile(`S|D|C|H|\*`)
 
-	if !strings.EqualFold(deckId, "") {
+	if !strings.EqualFold(deckID, "") {
 
 		card = &Card{
-			DeckID: deckId,
+			DeckID: deckID,
 			Code:   "",
 			Image:  "",
 			Value:  "",
@@ -38,41 +38,41 @@ func newCard(deckId, value, suit string) (card *Card, err error) {
 
 		if !suites.MatchString(suit) {
 			return nil, &cardError{"invalid suit.", value, suit}
-		} else {
-			switch suit {
-			case "S":
-				card.Suit = "SPADES"
-			case "D":
-				card.Suit = "DIAMONDS"
-			case "C":
-				card.Suit = "CLUBS"
-			case "H":
-				card.Suit = "HEARTS"
-			default:
-				card.Suit = "NONE"
-			}
+		}
+
+		switch suit {
+		case "S":
+			card.Suit = "SPADES"
+		case "D":
+			card.Suit = "DIAMONDS"
+		case "C":
+			card.Suit = "CLUBS"
+		case "H":
+			card.Suit = "HEARTS"
+		default:
+			card.Suit = "NONE"
 		}
 
 		if !values.MatchString(value) {
 			return nil, &cardError{"invalid value.", value, suit}
-		} else {
-			switch value {
-			case "A":
-				card.Value = "ACE"
-			case "K":
-				card.Value = "KING"
-			case "Q":
-				card.Value = "QUEEN"
-			case "J":
-				card.Value = "JACK"
-			case "0":
-				card.Value = "10"
-			case "*":
-				card.Value = "JOCKER"
-			default:
-				card.Value = value
-			}
 		}
+		switch value {
+		case "A":
+			card.Value = "ACE"
+		case "K":
+			card.Value = "KING"
+		case "Q":
+			card.Value = "QUEEN"
+		case "J":
+			card.Value = "JACK"
+		case "0":
+			card.Value = "10"
+		case "*":
+			card.Value = "JOCKER"
+		default:
+			card.Value = value
+		}
+
 		card.Code = fmt.Sprintf("%s%s", value, suit)
 		if !strings.EqualFold("*", value) && !strings.EqualFold("*", suit) {
 			card.Image = fmt.Sprintf("https://deckofcardsapi.com/static/img/%s.png", card.Code)
