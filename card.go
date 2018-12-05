@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+//Card is a type that implements the structure of a Card.
 type Card struct {
 	Image  string `json:"image"`
 	Value  string `json:"value"`
@@ -84,6 +85,7 @@ func newCard(deckID, value, suit string) (card *Card, err error) {
 	return
 }
 
+//String function serializes the Card struct into a representable string output.
 func (z *Card) String() string {
 	return fmt.Sprintf("DeckID: %s\n%s - %s", z.DeckID, z.Suit, z.Value)
 }
@@ -91,6 +93,18 @@ func (z *Card) String() string {
 func (z *Card) draw() *Card {
 
 	z.drawn = true
+	card := &Card{
+		Code:  z.Code,
+		Image: z.Image,
+		Value: z.Value,
+		Suit:  z.Suit,
+		drawn: z.drawn,
+	}
+
+	return card
+}
+
+func (z *Card) cloneCard() *Card {
 	card := &Card{
 		Code:  z.Code,
 		Image: z.Image,

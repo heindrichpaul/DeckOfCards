@@ -7,6 +7,7 @@ import (
 	"github.com/twinj/uuid"
 )
 
+//Pile is a type that implements the structure of a Draw.
 type Pile struct {
 	stack  []*pileObject
 	PileID string
@@ -17,6 +18,7 @@ type pileObject struct {
 	card   *Card
 }
 
+//String function serializes the Pile struct into a representable string output.
 func (z *pileObject) String() string {
 	var printString []string
 	printString = append(printString, fmt.Sprintf("DeckID: %s", z.deckID))
@@ -25,6 +27,7 @@ func (z *pileObject) String() string {
 	return strings.Join(printString, "\n")
 }
 
+//AddCardsToPile adds all the cards in the cards parameter that are present in the Draw to the pile.
 func (z *Pile) AddCardsToPile(draw *Draw, cards []*Card) {
 
 	if draw != nil && draw.Success && len(draw.Cards) != 0 {
@@ -52,6 +55,7 @@ func (z *Pile) AddCardsToPile(draw *Draw, cards []*Card) {
 	}
 }
 
+//NewPile creates a new Pile instance an returns a pointer to it.
 func NewPile() *Pile {
 	return &Pile{
 		PileID: uuid.NewV4().String(),
@@ -70,14 +74,16 @@ func (z *Pile) String() string {
 	return strings.Join(printString, "\n")
 }
 
+//RetrieveCardsInPile returns a copy of all cards in the pile
 func (z *Pile) RetrieveCardsInPile() (cards []*Card) {
 	for _, stackObject := range z.stack {
-		cards = append(cards, stackObject.card)
+		cards = append(cards, stackObject.card.cloneCard())
 	}
 
 	return
 }
 
+//PickAmountOfCardsFromBottomOfPile returns a Draw of the amount selected from the bottom of the pile.
 func (z *Pile) PickAmountOfCardsFromBottomOfPile(amount int) *Draw {
 	draw := &Draw{
 		Success:   false,
@@ -103,6 +109,7 @@ func (z *Pile) PickAmountOfCardsFromBottomOfPile(amount int) *Draw {
 	return draw
 }
 
+//PickAmountOfCardsFromTopOfPile returns a Draw of the amount selected from the top of the pile.
 func (z *Pile) PickAmountOfCardsFromTopOfPile(amount int) *Draw {
 	draw := &Draw{
 		Success:   false,
@@ -128,6 +135,7 @@ func (z *Pile) PickAmountOfCardsFromTopOfPile(amount int) *Draw {
 	return draw
 }
 
+//PickAllCardsFromPile returns all the cards in the pile as a Draw.
 func (z *Pile) PickAllCardsFromPile() *Draw {
 	draw := &Draw{
 		Success:   false,
@@ -145,6 +153,7 @@ func (z *Pile) PickAllCardsFromPile() *Draw {
 	return draw
 }
 
+//GetCardsFromPile returns the specified cards from the pile as a Draw.
 func (z *Pile) GetCardsFromPile(cards []*Card) *Draw {
 	draw := &Draw{
 		Success:   false,

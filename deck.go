@@ -13,6 +13,7 @@ import (
 
 var suits = [...]string{"S", "D", "C", "H"}
 
+//UnmarshalDeck unmarshals a byte array into a pointer to a Deck for internal use.
 func UnmarshalDeck(data []byte) (*Deck, error) {
 	var r Deck
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
@@ -20,11 +21,13 @@ func UnmarshalDeck(data []byte) (*Deck, error) {
 	return &r, err
 }
 
+//Marshal marshals a pointer to a Deck into a byte array for transmission.
 func (z *Deck) Marshal() ([]byte, error) {
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	return json.Marshal(z)
 }
 
+//Deck is a type that implements the structure of a Deck.
 type Deck struct {
 	Remaining int    `json:"remaining"`
 	DeckID    string `json:"deckId"`
@@ -33,6 +36,8 @@ type Deck struct {
 	cards     []*Card
 }
 
+/*NewDeck creates an unshuffled amount of decks requested by the parameter (amount).
+These decks do not contain jockers.*/
 func NewDeck(amount int) *Deck {
 	deck, err := newDeck(amount, false)
 	if err != nil {
@@ -50,6 +55,8 @@ func NewDeck(amount int) *Deck {
 	return deck
 }
 
+/*NewDeckWithJockers creates an unshuffled amount of decks requested by the parameter (amount).
+These decks do contain jockers.*/
 func NewDeckWithJockers(amount int) *Deck {
 	deck, err := newDeck(amount, true)
 	if err != nil {
@@ -137,6 +144,7 @@ func newDeck(amount int, jockers bool) (deck *Deck, err error) {
 	return deck, nil
 }
 
+//ShuffleDeck shuffles the deck that has been passed as a parameter.
 func ShuffleDeck(deck *Deck) *Deck {
 	for i := 1; i < len(deck.cards); i++ {
 		// Create a random int up to the number of cards
@@ -155,6 +163,7 @@ func ShuffleDeck(deck *Deck) *Deck {
 	return deck
 }
 
+//Draw draws the amount of requested cards from the current deck.
 func (z *Deck) Draw(amount int) (draw *Draw) {
 	draw = &Draw{
 		Cards:     make([]*Card, 0),
@@ -193,6 +202,7 @@ func (z *Deck) Draw(amount int) (draw *Draw) {
 	return
 }
 
+//String function serializes the Deck struct into a representable string output.
 func (z *Deck) String() string {
 	var printString []string
 	printString = append(printString, fmt.Sprintf("DeckID: %s", z.DeckID))
