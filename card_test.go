@@ -121,6 +121,12 @@ func cardCreatorHelper(deckId, suit, value string, t *testing.T) {
 		}
 	}
 
+	if !strings.EqualFold(card.DeckID, TestDECKID) {
+		t.Logf("The DeckID is not correctly stored on the creation of a new card.\n")
+		t.FailNow()
+
+	}
+
 	t.Log("Finished running " + fmt.Sprintf("%s%s", value, suit) + ": " + time.Now().String())
 }
 

@@ -32,13 +32,14 @@ func (z *Pile) AddCardsToPile(draw *Draw, cards []*Card) {
 
 			for _, card := range cards {
 				found := false
-				for i, f := range draw.Cards {
+				for _, f := range draw.Cards {
 					if f.Value == card.Value && f.Suit == card.Suit {
-						draw.Cards = append(draw.Cards[:i], draw.Cards[i+1:]...)
+						//						draw.Cards = append(draw.Cards[:i], draw.Cards[i+1:]...)
 						found = true
 					}
 				}
 				if found {
+					fmt.Println(card.DeckID)
 					p := &pileObject{
 						deckID: card.DeckID,
 						card:   card,
@@ -58,7 +59,7 @@ func NewPile() *Pile {
 	}
 }
 
-func (z *Pile) ListCardsInPile() string {
+func (z *Pile) String() string {
 	var printString []string
 	printString = append(printString, fmt.Sprintf("PileID: %s", z.PileID))
 

@@ -22,7 +22,6 @@ type cardError struct {
 }
 
 func newCard(deckId, value, suit string) (card *Card, err error) {
-
 	values := regexp.MustCompile(`[2-9]|0|A|K|Q|J|\*`)
 	suites := regexp.MustCompile(`S|D|C|H|\*`)
 
@@ -86,7 +85,7 @@ func newCard(deckId, value, suit string) (card *Card, err error) {
 }
 
 func (z *Card) String() string {
-	return fmt.Sprintf("%s - %s", z.Suit, z.Value)
+	return fmt.Sprintf("DeckID: %s\n%s - %s", z.DeckID, z.Suit, z.Value)
 }
 
 func (z *Card) draw() *Card {
