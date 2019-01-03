@@ -203,3 +203,68 @@ func TestDraw(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+func TestClone(t *testing.T) {
+	card, err := newCard(TestDECKID, "*", "*")
+	if err != nil {
+		t.Logf("Failed to create card: %s\n", err.Error())
+		t.FailNow()
+	}
+	clone := card.cloneCard()
+
+	if !card.Equals(clone) {
+		t.Logf("The two cards do not match after a clone.\n")
+		t.FailNow()
+	}
+
+}
+
+func TestEquals(t *testing.T) {
+	card, err := newCard(TestDECKID, "*", "*")
+	if err != nil {
+		t.Logf("Failed to create card: %s\n", err.Error())
+		t.FailNow()
+	}
+	clone := card.cloneCard()
+
+	if !card.Equals(clone) {
+		t.Logf("The two cards do not match after a clone.\n")
+		t.FailNow()
+	}
+
+	clone.Code = "1"
+
+	if card.Equals(clone) {
+		t.Logf("The two cards do match after altering the clone.\n")
+		t.FailNow()
+	}
+
+	clone = card.cloneCard()
+	clone.Image = "2"
+	if card.Equals(clone) {
+		t.Logf("The two cards do match after altering the clone.\n")
+		t.FailNow()
+	}
+
+	clone = card.cloneCard()
+	clone.Suit = "3"
+	if card.Equals(clone) {
+		t.Logf("The two cards do match after altering the clone.\n")
+		t.FailNow()
+	}
+
+	clone = card.cloneCard()
+	clone.Value = "4"
+	if card.Equals(clone) {
+		t.Logf("The two cards do match after altering the clone.\n")
+		t.FailNow()
+	}
+
+	clone = card.cloneCard()
+	clone.drawn = !card.drawn
+	if card.Equals(clone) {
+		t.Logf("The two cards do match after altering the clone.\n")
+		t.FailNow()
+	}
+
+}

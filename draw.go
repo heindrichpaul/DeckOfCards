@@ -33,9 +33,7 @@ func (z *Draw) String() string {
 	var printString []string
 
 	for _, card := range z.Cards {
-		if !card.drawn {
-			printString = append(printString, fmt.Sprintf("%s", card))
-		}
+		printString = append(printString, fmt.Sprintf("%s", card))
 	}
 
 	return strings.Join(printString, "\n")

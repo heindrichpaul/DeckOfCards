@@ -116,6 +116,25 @@ func (z *Card) cloneCard() *Card {
 	return card
 }
 
+func (z *Card) Equals(card *Card) bool {
+	if z.Code != card.Code {
+		return false
+	}
+	if z.Image != card.Image {
+		return false
+	}
+	if z.Value != card.Value {
+		return false
+	}
+	if z.Suit != card.Suit {
+		return false
+	}
+	if z.drawn != card.drawn {
+		return false
+	}
+	return true
+}
+
 func (z *cardError) Error() string {
 	return fmt.Sprintf(`Card suit (%s), value (%s): %s`, z.suit, z.value, z.err)
 }
