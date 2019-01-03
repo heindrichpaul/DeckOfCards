@@ -51,7 +51,6 @@ func (z *Pile) AddCardsToPile(draw *Draw, cards []*Card) {
 				}
 			}
 		}
-	} else {
 	}
 }
 
