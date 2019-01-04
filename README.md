@@ -2,8 +2,8 @@
 
 ---
 
-* [Reason for the project](#)
-* [Project status](#)
+* [Reason for the project](#reason-for-the-project)
+* [Project status](#project-status)
 * [Install](#install)
 * [License](#license)
 
