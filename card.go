@@ -94,11 +94,12 @@ func (z *Card) draw() *Card {
 
 	z.drawn = true
 	card := &Card{
-		Code:  z.Code,
-		Image: z.Image,
-		Value: z.Value,
-		Suit:  z.Suit,
-		drawn: z.drawn,
+		Code:   z.Code,
+		Image:  z.Image,
+		Value:  z.Value,
+		Suit:   z.Suit,
+		drawn:  z.drawn,
+		DeckID: z.DeckID,
 	}
 
 	return card
@@ -116,6 +117,7 @@ func (z *Card) cloneCard() *Card {
 	return card
 }
 
+//Equals function compares two cards with each other.
 func (z *Card) Equals(card *Card) bool {
 	if z.Code != card.Code {
 		return false

@@ -9,8 +9,9 @@ import (
 
 //Pile is a type that implements the structure of a Draw.
 type Pile struct {
-	stack  []*pileObject
-	PileID string
+	stack     []*pileObject
+	Remaining int
+	PileID    string
 }
 
 type pileObject struct {
@@ -21,7 +22,6 @@ type pileObject struct {
 //String function serializes the Pile struct into a representable string output.
 func (z *pileObject) String() string {
 	var printString []string
-	printString = append(printString, fmt.Sprintf("DeckID: %s", z.deckID))
 	printString = append(printString, fmt.Sprintf("%s", z.card))
 
 	return strings.Join(printString, "\n")
@@ -52,13 +52,16 @@ func (z *Pile) AddCardsToPile(draw *Draw, cards []*Card) {
 			}
 		}
 	}
+
+	z.Remaining = len(z.stack)
 }
 
 //NewPile creates a new Pile instance an returns a pointer to it.
 func NewPile() *Pile {
 	return &Pile{
-		PileID: uuid.NewV4().String(),
-		stack:  make([]*pileObject, 0),
+		PileID:    uuid.NewV4().String(),
+		stack:     make([]*pileObject, 0),
+		Remaining: 0,
 	}
 }
 
@@ -94,16 +97,19 @@ func (z *Pile) PickAmountOfCardsFromBottomOfPile(amount int) *Draw {
 		return draw
 	}
 
-	if amount >= len(z.stack) {
-		amount = len(z.stack)
+	if amount >= z.Remaining {
+		amount = z.Remaining
 	}
 
-	for i, stackObject := range z.stack[len(z.stack)-amount-1:] {
+	sliceOfStack := z.stack[z.Remaining-amount:]
+	for _, stackObject := range sliceOfStack {
 		draw.Cards = append(draw.Cards, stackObject.card)
-		z.stack = append(z.stack[:i], z.stack[i+1:]...)
 	}
+	z.stack = z.stack[:z.Remaining-amount]
+	z.Remaining = len(z.stack)
 
 	draw.Remaining = len(draw.Cards)
+	draw.Success = true
 
 	return draw
 }
@@ -120,16 +126,19 @@ func (z *Pile) PickAmountOfCardsFromTopOfPile(amount int) *Draw {
 		return draw
 	}
 
-	if amount >= len(z.stack) {
-		amount = len(z.stack)
+	if amount >= z.Remaining {
+		amount = z.Remaining
 	}
 
-	for i, stackObject := range z.stack {
+	sliceOfStack := z.stack[:amount]
+	for _, stackObject := range sliceOfStack {
 		draw.Cards = append(draw.Cards, stackObject.card)
-		z.stack = append(z.stack[:i], z.stack[i+1:]...)
 	}
+	z.stack = z.stack[amount:]
+	z.Remaining = len(z.stack)
 
 	draw.Remaining = len(draw.Cards)
+	draw.Success = true
 
 	return draw
 }
@@ -149,6 +158,7 @@ func (z *Pile) PickAllCardsFromPile() *Draw {
 		}
 	}
 	z.stack = make([]*pileObject, 0)
+	draw.Success = true
 	return draw
 }
 
