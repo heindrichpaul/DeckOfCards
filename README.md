@@ -1,4 +1,4 @@
-# DeckOfCards [![Build Status](https://www.travis-ci.com/heindrichpaul/deckofcards.svg?branch=master)](https://www.travis-ci.com/heindrichpaul/deckofcards)[![codecov](https://codecov.io/gh/heindrichpaul/DeckOfCards/branch/master/graph/badge.svg)](https://codecov.io/gh/heindrichpaul/DeckOfCards)
+# DeckOfCards [![GoDoc](https://godoc.org/github.com/heindrichpaul/deckofcards?status.svg)](https://godoc.org/github.com/heindrichpaul/deckofcards)[![Build Status](https://www.travis-ci.com/heindrichpaul/deckofcards.svg?branch=master)](https://www.travis-ci.com/heindrichpaul/deckofcards)[![codecov](https://codecov.io/gh/heindrichpaul/DeckOfCards/branch/master/graph/badge.svg)](https://codecov.io/gh/heindrichpaul/DeckOfCards)
 
 ---
 
