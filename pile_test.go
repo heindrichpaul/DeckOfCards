@@ -25,7 +25,7 @@ func TestAddCardsToPile(t *testing.T) {
 		t.FailNow()
 	}
 
-	fmt.Printf("%s\n", (fmt.Sprintf("%s", deck)))
+	fmt.Printf("%s\n", deck.String())
 	pile := NewPile()
 	draw := deck.Draw(6)
 	if !draw.Success {
