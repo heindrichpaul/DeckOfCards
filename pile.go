@@ -22,7 +22,7 @@ type pileObject struct {
 //String function serializes the Pile struct into a representable string output.
 func (z *pileObject) String() string {
 	var printString []string
-	printString = append(printString, fmt.Sprintf("%s", z.card))
+	printString = append(printString, z.card.String())
 
 	return strings.Join(printString, "\n")
 }
