@@ -25,7 +25,7 @@ func TestAddCardsToPile(t *testing.T) {
 		t.FailNow()
 	}
 
-	fmt.Printf("%s\n", (fmt.Sprintf("%s", deck)))
+	fmt.Printf("%s\n", deck.String())
 	pile := NewPile()
 	draw := deck.Draw(6)
 	if !draw.Success {
@@ -252,7 +252,7 @@ func TestPile_GetCardsFromPile(t *testing.T) {
 
 	cardsToRequestFromPile := make([]*Card, 0)
 	if draw.Remaining >= amountOfCardsToDraw {
-		cardsToRequestFromPile = append(cardsToRequestFromPile, draw.Cards[amountOfCardsToDraw/amountOfCardsToDraw])
+		cardsToRequestFromPile = append(cardsToRequestFromPile, draw.Cards[(amountOfCardsToDraw/1)-1])
 		cardsToRequestFromPile = append(cardsToRequestFromPile, draw.Cards[amountOfCardsToDraw/2])
 	}
 	pile.AddCardsToPile(draw, draw.Cards)
