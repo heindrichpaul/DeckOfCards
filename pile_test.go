@@ -69,7 +69,7 @@ func TestPile_PickAmountOfCardsFromBottomOfPile(t *testing.T) {
 	pile.AddCardsToPile(draw, draw.Cards)
 	backupOfCardsInPile := pile.RetrieveCardsInPile()
 
-	fmt.Printf("PickAmountOfCardsFromBottomOfPile\n%s\n", (fmt.Sprintf("%s", pile)))
+	fmt.Printf("PickAmountOfCardsFromBottomOfPile\n%s\n", pile.String())
 
 	cardsFromPile := pile.PickAmountOfCardsFromBottomOfPile(amountOfCards)
 	if cardsFromPile.Remaining != amountOfCards {
@@ -130,7 +130,7 @@ func TestPile_PickAmountOfCardsFromTopOfPile(t *testing.T) {
 	}
 	amountOfCards := 4
 
-	fmt.Printf("%s\n", (fmt.Sprintf("%s", deck)))
+	fmt.Printf("%s\n", deck.String())
 	pile := NewPile()
 	draw := deck.Draw(6)
 	if !draw.Success {
@@ -140,7 +140,7 @@ func TestPile_PickAmountOfCardsFromTopOfPile(t *testing.T) {
 	pile.AddCardsToPile(draw, draw.Cards)
 	backupOfCardsInPile := pile.RetrieveCardsInPile()
 
-	fmt.Printf("PickAmountOfCardsFromTopOfPile\n%s\n", (fmt.Sprintf("%s", pile)))
+	fmt.Printf("PickAmountOfCardsFromTopOfPile\n%s\n", pile.String())
 
 	cardsFromPile := pile.PickAmountOfCardsFromTopOfPile(amountOfCards)
 	if cardsFromPile.Remaining != amountOfCards {
@@ -200,7 +200,7 @@ func TestPile_PickAllCardsFromPile(t *testing.T) {
 		t.FailNow()
 	}
 
-	fmt.Printf("%s\n", (fmt.Sprintf("%s", deck)))
+	fmt.Printf("%s\n", deck.String())
 	pile := NewPile()
 	draw := deck.Draw(6)
 	if !draw.Success {
@@ -210,7 +210,7 @@ func TestPile_PickAllCardsFromPile(t *testing.T) {
 	pile.AddCardsToPile(draw, draw.Cards)
 	backupOfCardsInPile := pile.RetrieveCardsInPile()
 
-	fmt.Printf("PickAllCardsFromPile\n%s\n", (fmt.Sprintf("%s", pile)))
+	fmt.Printf("PickAllCardsFromPile\n%s\n", pile.String())
 
 	cardsFromPile := pile.PickAllCardsFromPile()
 	amountOfCardsInPile := len(backupOfCardsInPile)
@@ -242,7 +242,7 @@ func TestPile_GetCardsFromPile(t *testing.T) {
 		t.FailNow()
 	}
 
-	fmt.Printf("%s\n", (fmt.Sprintf("%s", deck)))
+	fmt.Printf("%s\n", deck.String())
 	pile := NewPile()
 	draw := deck.Draw(amountOfCardsToDraw)
 	if !draw.Success {
@@ -257,7 +257,7 @@ func TestPile_GetCardsFromPile(t *testing.T) {
 	}
 	pile.AddCardsToPile(draw, draw.Cards)
 
-	fmt.Printf("GetCardsFromPile\n%s\n", (fmt.Sprintf("%s", pile)))
+	fmt.Printf("GetCardsFromPile\n%s\n", pile.String())
 
 	cardsFromPile := pile.GetCardsFromPile(cardsToRequestFromPile)
 	if cardsFromPile.Remaining != 2 {
