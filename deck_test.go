@@ -308,7 +308,7 @@ func TestDeckString(t *testing.T) {
 	success := fmt.Sprintf("Success: %t", deck.Success)
 	shuffled := fmt.Sprintf("Shuffled: %t", deck.Shuffled)
 
-	deckString := fmt.Sprintf("%s", deck)
+	deckString := deck.String()
 
 	if !strings.Contains(deckString, id) {
 		t.Logf("The string needs to contain the DeckID\n")

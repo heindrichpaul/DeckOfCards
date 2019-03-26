@@ -212,7 +212,7 @@ func (z *Deck) String() string {
 
 	for _, card := range z.cards {
 		if !card.drawn {
-			printString = append(printString, fmt.Sprintf("%s", card))
+			printString = append(printString, card.String())
 		}
 	}
 
