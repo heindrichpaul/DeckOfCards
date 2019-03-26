@@ -1,7 +1,6 @@
 package deckofcards
 
 import (
-	"fmt"
 	"strings"
 
 	jsoniter "github.com/json-iterator/go"
