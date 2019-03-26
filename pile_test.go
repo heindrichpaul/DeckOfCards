@@ -32,9 +32,9 @@ func TestAddCardsToPile(t *testing.T) {
 		t.Logf("Failed to draw from deck\n")
 		t.FailNow()
 	}
-	fmt.Printf("%s\n", (fmt.Sprintf("%s", pile)))
+	fmt.Printf("%s\n", pile.String())
 	pile.AddCardsToPile(draw, draw.Cards)
-	fmt.Printf("%s\n", (fmt.Sprintf("%s", pile)))
+	fmt.Printf("%s\n", pile.String())
 
 	found := false
 	for _, pileCard := range pile.RetrieveCardsInPile() {
@@ -59,7 +59,7 @@ func TestPile_PickAmountOfCardsFromBottomOfPile(t *testing.T) {
 	}
 	amountOfCards := 4
 
-	fmt.Printf("%s\n", (fmt.Sprintf("%s", deck)))
+	fmt.Printf("%s\n", deck.String())
 	pile := NewPile()
 	draw := deck.Draw(6)
 	if !draw.Success {
