@@ -162,7 +162,7 @@ func TestCardString(t *testing.T) {
 		t.Logf("Failed to create card: %s\n", err.Error())
 		t.FailNow()
 	}
-	actualString := fmt.Sprintf("%s", card)
+	actualString := card.String()
 	expectedString := fmt.Sprintf("%s - %s", card.Suit, card.Value)
 	if !strings.EqualFold(actualString, expectedString) {
 		t.Logf("expected:[%s] but received:[%s]\n", expectedString, actualString)
