@@ -166,30 +166,6 @@ func TestInjectionOfUnsupportedSuitWhileRunningNewDeckWithJoker(t *testing.T) {
 
 func TestShuffleDeck(t *testing.T) {
 	deck := NewDeckWithJokers(1)
-	if deck == nil {
-		t.Logf("Failed to create deck\n")
-		t.FailNow()
-	}
-	if !deck.Success {
-		t.Logf("Deck not properly initialized. Expected a success on a successful creation\n")
-		t.FailNow()
-	}
-	if deck.Remaining != len(deck.cards) && len(deck.cards) != 54 {
-		t.Logf("Deck not properly initialized. Expected amount of cards remaining and the length of the cards slice to be equavalent after a new deck is created.\n")
-		t.FailNow()
-	}
-	if strings.EqualFold(deck.DeckID, "\n") {
-		t.Logf("Deck not properly initialized. Expected a non empty DeckID\n")
-		t.FailNow()
-	}
-	if deck.Shuffled {
-		t.Logf("Deck not properly initialized. Expected an unshuffled deck\n")
-		t.FailNow()
-	}
-	if !strings.EqualFold(deck.cards[53].Value, "JOKER\n") && !strings.EqualFold(deck.cards[53].Suit, "NONE") && !strings.EqualFold(deck.cards[52].Value, "JOKER") && !strings.EqualFold(deck.cards[52].Suit, "NONE") {
-		t.Logf("Deck not properly initialized. Expected last two cards on an unshuffled deck to be JOKERS.\n")
-		t.FailNow()
-	}
 	t.Logf("Deck is being shuffled\n")
 	deck = ShuffleDeck(deck)
 	if !deck.Shuffled {
