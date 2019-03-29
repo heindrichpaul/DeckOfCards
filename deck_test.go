@@ -108,8 +108,8 @@ func TestNewDeckWithJockers(t *testing.T) {
 		t.Logf("Deck not properly initialized. Expected an unshuffled deck\n")
 		t.FailNow()
 	}
-	if !strings.EqualFold(deck.cards[53].Value, "JOCKER\n") && !strings.EqualFold(deck.cards[53].Suit, "NONE") && !strings.EqualFold(deck.cards[52].Value, "JOCKER") && !strings.EqualFold(deck.cards[52].Suit, "NONE") {
-		t.Logf("Deck not properly initialized. Expected last two cards on an unshuffled deck to be JOCKERS.\n")
+	if !strings.EqualFold(deck.cards[53].Value, "JOKER\n") && !strings.EqualFold(deck.cards[53].Suit, "NONE") && !strings.EqualFold(deck.cards[52].Value, "JOKER\n") && !strings.EqualFold(deck.cards[52].Suit, "NONE") {
+		t.Logf("Deck not properly initialized. Expected last two cards on an unshuffled deck to be JOKERS.\n")
 		t.FailNow()
 	}
 }
@@ -186,8 +186,8 @@ func TestShuffleDeck(t *testing.T) {
 		t.Logf("Deck not properly initialized. Expected an unshuffled deck\n")
 		t.FailNow()
 	}
-	if !strings.EqualFold(deck.cards[53].Value, "JOCKER\n") && !strings.EqualFold(deck.cards[53].Suit, "NONE") && !strings.EqualFold(deck.cards[52].Value, "JOCKER") && !strings.EqualFold(deck.cards[52].Suit, "NONE") {
-		t.Logf("Deck not properly initialized. Expected last two cards on an unshuffled deck to be JOCKERS.\n")
+	if !strings.EqualFold(deck.cards[53].Value, "JOKER\n") && !strings.EqualFold(deck.cards[53].Suit, "NONE") && !strings.EqualFold(deck.cards[52].Value, "JOKER") && !strings.EqualFold(deck.cards[52].Suit, "NONE") {
+		t.Logf("Deck not properly initialized. Expected last two cards on an unshuffled deck to be JOKERS.\n")
 		t.FailNow()
 	}
 	t.Logf("Deck is being shuffled\n")
@@ -196,8 +196,8 @@ func TestShuffleDeck(t *testing.T) {
 		t.Logf("Deck not properly shuffled. Expected an shuffled deck\n")
 		t.FailNow()
 	}
-	if strings.EqualFold(deck.cards[53].Value, "JOCKER\n") && strings.EqualFold(deck.cards[53].Suit, "NONE") && strings.EqualFold(deck.cards[52].Value, "JOCKER") && strings.EqualFold(deck.cards[52].Suit, "NONE") {
-		t.Logf("Deck not properly shuffled. Expected last two cards on an shuffled deck to not be JOCKERS.\n")
+	if strings.EqualFold(deck.cards[53].Value, "JOKER\n") && strings.EqualFold(deck.cards[53].Suit, "NONE") && strings.EqualFold(deck.cards[52].Value, "JOKER") && strings.EqualFold(deck.cards[52].Suit, "NONE") {
+		t.Logf("Deck not properly shuffled. Expected last two cards on an shuffled deck to not be JOKERS.\n")
 		t.FailNow()
 	}
 }
