@@ -23,7 +23,7 @@ type cardError struct {
 }
 
 func newCard(deckID, value, suit string) (card *Card, err error) {
-	
+
 	if !strings.EqualFold(deckID, "") {
 
 		card = &Card{
@@ -43,7 +43,7 @@ func newCard(deckID, value, suit string) (card *Card, err error) {
 		if err != nil {
 			return card, err
 		}
-	
+
 		card.Code = fmt.Sprintf("%s%s", value, suit)
 		if !strings.EqualFold("*", value) && !strings.EqualFold("*", suit) {
 			card.Image = fmt.Sprintf("https://deckofcardsapi.com/static/img/%s.png", card.Code)
@@ -55,7 +55,7 @@ func newCard(deckID, value, suit string) (card *Card, err error) {
 	return
 }
 
-func getValue(value string ) (result string, err error) {
+func getValue(value string) (result string, err error) {
 
 	values := regexp.MustCompile(`[2-9]|0|A|K|Q|J|\*`)
 	if !values.MatchString(value) {
@@ -79,7 +79,7 @@ func getValue(value string ) (result string, err error) {
 		result = value
 	}
 
-	return 
+	return
 }
 
 func getSuit(suit string) (result string, err error) {
@@ -102,7 +102,7 @@ func getSuit(suit string) (result string, err error) {
 		result = "NONE"
 	}
 
-	return 
+	return
 }
 
 //String function serializes the Card struct into a representable string output.
