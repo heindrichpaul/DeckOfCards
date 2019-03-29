@@ -40,6 +40,34 @@ func cardCreatorHelper(deckID, suit, value string, t *testing.T) {
 		t.Logf("Failed to verify card code for: %s%s expected: %s\n", value, suit, card.Code)
 		t.FailNow()
 	}
+	CheckSuit(t, card, value, suit)
+	CheckValue(t, card, value, suit)
+
+	if card.drawn {
+		t.Logf("Failed to verify card drawn flag for: %s%s expected: false but received: %t\n", value, suit, card.drawn)
+		t.FailNow()
+	}
+
+	if strings.Compare(card.Image, "") != 0 {
+		resp, err := http.Get(card.Image)
+		if err != nil {
+			t.Error(err.Error())
+		}
+		if resp.StatusCode != 200 {
+			t.Errorf("Unable to find image %s\n", card.Image)
+		}
+	}
+
+	if !strings.EqualFold(card.DeckID, TestDECKID) {
+		t.Logf("The DeckID is not correctly stored on the creation of a new card.\n")
+		t.FailNow()
+
+	}
+
+	t.Log("Finished running " + fmt.Sprintf("%s%s", value, suit) + ": " + time.Now().String())
+}
+
+func CheckSuit(t *testing.T, card *Card, value, suit string) {
 	switch suit {
 	case "S":
 		if !strings.EqualFold(card.Suit, "SPADES") {
@@ -67,7 +95,9 @@ func cardCreatorHelper(deckID, suit, value string, t *testing.T) {
 			t.FailNow()
 		}
 	}
+}
 
+func CheckValue(t *testing.T, card *Card, value, suit string) {
 	switch value {
 	case "A":
 		if !strings.EqualFold(card.Value, "ACE") {
@@ -105,31 +135,7 @@ func cardCreatorHelper(deckID, suit, value string, t *testing.T) {
 			t.FailNow()
 		}
 	}
-
-	if card.drawn {
-		t.Logf("Failed to verify card drawn flag for: %s%s expected: false but received: %t\n", value, suit, card.drawn)
-		t.FailNow()
-	}
-
-	if strings.Compare(card.Image, "") != 0 {
-		resp, err := http.Get(card.Image)
-		if err != nil {
-			t.Error(err.Error())
-		}
-		if resp.StatusCode != 200 {
-			t.Errorf("Unable to find image %s\n", card.Image)
-		}
-	}
-
-	if !strings.EqualFold(card.DeckID, TestDECKID) {
-		t.Logf("The DeckID is not correctly stored on the creation of a new card.\n")
-		t.FailNow()
-
-	}
-
-	t.Log("Finished running " + fmt.Sprintf("%s%s", value, suit) + ": " + time.Now().String())
 }
-
 func TestNewCardWithInvalidSuit(t *testing.T) {
 	suit := ""
 	value := "0"
