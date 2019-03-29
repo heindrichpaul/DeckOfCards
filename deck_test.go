@@ -86,8 +86,8 @@ func TestInjectionOfUnsupportedSuit(t *testing.T) {
 	suits[0] = "S"
 }
 
-func TestNewDeckWithJockers(t *testing.T) {
-	deck := NewDeckWithJockers(1)
+func TestNewDeckWithJokers(t *testing.T) {
+	deck := NewDeckWithJokers(1)
 	if deck == nil {
 		t.Logf("Failed to create deck\n")
 		t.FailNow()
@@ -114,8 +114,8 @@ func TestNewDeckWithJockers(t *testing.T) {
 	}
 }
 
-func TestNewDeckWithJockerWithNegativeNumber(t *testing.T) {
-	deck := NewDeckWithJockers(-1)
+func TestNewDeckWithJokerWithNegativeNumber(t *testing.T) {
+	deck := NewDeckWithJokers(-1)
 	if deck == nil {
 		t.Logf("Failed to create deck\n")
 		t.FailNow()
@@ -138,9 +138,9 @@ func TestNewDeckWithJockerWithNegativeNumber(t *testing.T) {
 	}
 }
 
-func TestInjectionOfUnsupportedSuitWhileRunningNewDeckWithJocker(t *testing.T) {
+func TestInjectionOfUnsupportedSuitWhileRunningNewDeckWithJoker(t *testing.T) {
 	suits[0] = "F"
-	deck := NewDeckWithJockers(1)
+	deck := NewDeckWithJokers(1)
 	if deck == nil {
 		t.Logf("Failed to create deck\n")
 		t.FailNow()
@@ -165,7 +165,7 @@ func TestInjectionOfUnsupportedSuitWhileRunningNewDeckWithJocker(t *testing.T) {
 }
 
 func TestShuffleDeck(t *testing.T) {
-	deck := NewDeckWithJockers(1)
+	deck := NewDeckWithJokers(1)
 	if deck == nil {
 		t.Logf("Failed to create deck\n")
 		t.FailNow()
@@ -203,7 +203,7 @@ func TestShuffleDeck(t *testing.T) {
 }
 
 func TestDrawWithValidNumber(t *testing.T) {
-	deck := NewDeckWithJockers(1)
+	deck := NewDeckWithJokers(1)
 	fmt.Printf("Deck before draw:\n%s", deck)
 	remaining := deck.Remaining
 	drawAmount := 2
@@ -240,7 +240,7 @@ func TestDrawWithValidNumber(t *testing.T) {
 }
 
 func TestDrawWithMoreThanRemainingNumberOfCards(t *testing.T) {
-	deck := NewDeckWithJockers(1)
+	deck := NewDeckWithJokers(1)
 	deck.Remaining = 2
 	remaining := deck.Remaining
 	drawAmount := remaining + 2
@@ -264,7 +264,7 @@ func TestDrawWithMoreThanRemainingNumberOfCards(t *testing.T) {
 }
 
 func TestDrawWithNoMoreCardsRemaining(t *testing.T) {
-	deck := NewDeckWithJockers(1)
+	deck := NewDeckWithJokers(1)
 	deck.Remaining = 0
 	remaining := deck.Remaining
 	drawAmount := remaining + 2
@@ -287,7 +287,7 @@ func TestDrawWithNoMoreCardsRemaining(t *testing.T) {
 	}
 }
 func TestDrawWithInvalidNumber(t *testing.T) {
-	deck := NewDeckWithJockers(1)
+	deck := NewDeckWithJokers(1)
 	remaining := deck.Remaining
 	drawAmount := -1
 	draw := deck.Draw(drawAmount)
