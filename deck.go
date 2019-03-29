@@ -37,7 +37,7 @@ type Deck struct {
 }
 
 /*NewDeck creates an unshuffled amount of decks requested by the parameter (amount).
-These decks do not contain jockers.*/
+These decks do not contain jokers.*/
 func NewDeck(amount int) *Deck {
 	deck, err := newDeck(amount, false)
 	if err != nil {
@@ -55,9 +55,9 @@ func NewDeck(amount int) *Deck {
 	return deck
 }
 
-/*NewDeckWithJockers creates an unshuffled amount of decks requested by the parameter (amount).
-These decks do contain jockers.*/
-func NewDeckWithJockers(amount int) *Deck {
+/*NewDeckWithJokers creates an unshuffled amount of decks requested by the parameter (amount).
+These decks do contain jokers.*/
+func NewDeckWithJokers(amount int) *Deck {
 	deck, err := newDeck(amount, true)
 	if err != nil {
 		log.Printf("Failed to create the deck: %s", err.Error())
@@ -73,7 +73,7 @@ func NewDeckWithJockers(amount int) *Deck {
 	return deck
 }
 
-func newDeck(amount int, jockers bool) (deck *Deck, err error) {
+func newDeck(amount int, jokers bool) (deck *Deck, err error) {
 	deck = &Deck{
 		DeckID:    uuid.NewV4().String(),
 		Success:   false,
@@ -124,7 +124,7 @@ func newDeck(amount int, jockers bool) (deck *Deck, err error) {
 				deck.Remaining++
 			}
 		}
-		if jockers {
+		if jokers {
 			card, err := newCard(deck.DeckID, "*", "*")
 			if err == nil {
 				deck.cards = append(deck.cards, card)

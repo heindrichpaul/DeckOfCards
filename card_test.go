@@ -95,8 +95,8 @@ func cardCreatorHelper(deckID, suit, value string, t *testing.T) {
 			t.FailNow()
 		}
 	case "*":
-		if !strings.EqualFold(card.Value, "JOCKER") {
-			t.Logf("Failed to verify card value for: %s%s expected: JOCKER but received %s\n", value, suit, card.Value)
+		if !strings.EqualFold(card.Value, "JOKER") {
+			t.Logf("Failed to verify card value for: %s%s expected: JOKER but received %s\n", value, suit, card.Value)
 			t.FailNow()
 		}
 	default:

@@ -23,9 +23,7 @@ type cardError struct {
 }
 
 func newCard(deckID, value, suit string) (card *Card, err error) {
-	values := regexp.MustCompile(`[2-9]|0|A|K|Q|J|\*`)
-	suites := regexp.MustCompile(`S|D|C|H|\*`)
-
+	
 	if !strings.EqualFold(deckID, "") {
 
 		card = &Card{
@@ -37,43 +35,15 @@ func newCard(deckID, value, suit string) (card *Card, err error) {
 			drawn:  false,
 		}
 
-		if !suites.MatchString(suit) {
-			return nil, &cardError{"invalid suit.", value, suit}
+		card.Value, err = getValue(value)
+		if err != nil {
+			return card, err
 		}
-
-		switch suit {
-		case "S":
-			card.Suit = "SPADES"
-		case "D":
-			card.Suit = "DIAMONDS"
-		case "C":
-			card.Suit = "CLUBS"
-		case "H":
-			card.Suit = "HEARTS"
-		default:
-			card.Suit = "NONE"
+		card.Suit, err = getSuit(suit)
+		if err != nil {
+			return card, err
 		}
-
-		if !values.MatchString(value) {
-			return nil, &cardError{"invalid value.", value, suit}
-		}
-		switch value {
-		case "A":
-			card.Value = "ACE"
-		case "K":
-			card.Value = "KING"
-		case "Q":
-			card.Value = "QUEEN"
-		case "J":
-			card.Value = "JACK"
-		case "0":
-			card.Value = "10"
-		case "*":
-			card.Value = "JOCKER"
-		default:
-			card.Value = value
-		}
-
+	
 		card.Code = fmt.Sprintf("%s%s", value, suit)
 		if !strings.EqualFold("*", value) && !strings.EqualFold("*", suit) {
 			card.Image = fmt.Sprintf("https://deckofcardsapi.com/static/img/%s.png", card.Code)
@@ -83,6 +53,56 @@ func newCard(deckID, value, suit string) (card *Card, err error) {
 	}
 
 	return
+}
+
+func getValue(value string ) (result string, err error) {
+
+	values := regexp.MustCompile(`[2-9]|0|A|K|Q|J|\*`)
+	if !values.MatchString(value) {
+		return "", &cardError{"invalid value.", value, ""}
+	}
+
+	switch value {
+	case "A":
+		result = "ACE"
+	case "K":
+		result = "KING"
+	case "Q":
+		result = "QUEEN"
+	case "J":
+		result = "JACK"
+	case "0":
+		result = "10"
+	case "*":
+		result = "JOKER"
+	default:
+		result = value
+	}
+
+	return 
+}
+
+func getSuit(suit string) (result string, err error) {
+
+	suites := regexp.MustCompile(`S|D|C|H|\*`)
+	if !suites.MatchString(suit) {
+		return "", &cardError{"invalid suit.", "", suit}
+	}
+
+	switch suit {
+	case "S":
+		result = "SPADES"
+	case "D":
+		result = "DIAMONDS"
+	case "C":
+		result = "CLUBS"
+	case "H":
+		result = "HEARTS"
+	default:
+		result = "NONE"
+	}
+
+	return 
 }
 
 //String function serializes the Card struct into a representable string output.
