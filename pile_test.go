@@ -279,3 +279,16 @@ func TestPile_GetCardsFromPile(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+func TestShufflePile(t *testing.T) {
+	deck := NewDeckWithJokers(1)
+	t.Logf("Deck is being shuffled\n")
+	draw := deck.Draw(54)
+	pile := NewPile()
+	pile.AddCardsToPile(draw, draw.Cards)
+	pile = ShufflePile(pile)
+	if strings.EqualFold(pile.cards[53].Value, "JOKER\n") && strings.EqualFold(pile.cards[53].Suit, "NONE") && strings.EqualFold(pile.cards[52].Value, "JOKER") && strings.EqualFold(pile.cards[52].Suit, "NONE") {
+		t.Logf("Pile not properly shuffled. Expected last two cards on an shuffled pile to not be JOKERS.\n")
+		t.FailNow()
+	}
+}

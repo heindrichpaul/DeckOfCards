@@ -171,3 +171,9 @@ func (z *Pile) GetCardsFromPile(cards Cards) *Draw {
 	}
 	return draw
 }
+
+//ShufflePile returns a shuffled pile
+func ShufflePile(pile *Pile) *Pile {
+	pile.cards = shuffle(pile.cards)
+	return pile
+}

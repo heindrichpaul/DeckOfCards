@@ -3,7 +3,6 @@ package deckofcards
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	"strconv"
 	"strings"
 
@@ -146,16 +145,7 @@ func newDeck(amount int, jokers bool) (deck *Deck, err error) {
 
 //ShuffleDeck shuffles the deck that has been passed as a parameter.
 func ShuffleDeck(deck *Deck) *Deck {
-	for i := 1; i < len(deck.cards); i++ {
-		// Create a random int up to the number of cards
-		r := rand.Intn(i + 1)
-
-		// If the the current card doesn't match the random
-		// int we generated then we'll switch them out
-		if i != r {
-			deck.cards[r], deck.cards[i] = deck.cards[i], deck.cards[r]
-		}
-	}
+	deck.cards = shuffle(deck.cards)
 	for _, card := range deck.cards {
 		card.drawn = false
 	}
