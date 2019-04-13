@@ -85,9 +85,7 @@ func (z *Pile) PickAmountOfCardsFromBottomOfPile(amount int) *Draw {
 	}
 
 	sliceOfCards := z.cards[z.Remaining-amount:]
-	for _, pileCard := range sliceOfCards {
-		draw.Cards = append(draw.Cards, pileCard)
-	}
+	draw.Cards = append(draw.Cards, sliceOfCards...)
 	z.cards = z.cards[:z.Remaining-amount]
 	z.Remaining = len(z.cards)
 
@@ -114,9 +112,7 @@ func (z *Pile) PickAmountOfCardsFromTopOfPile(amount int) *Draw {
 	}
 
 	sliceOfCards := z.cards[:amount]
-	for _, pileCard := range sliceOfCards {
-		draw.Cards = append(draw.Cards, pileCard)
-	}
+	draw.Cards = append(draw.Cards, sliceOfCards...)
 	z.cards = z.cards[amount:]
 	z.Remaining = len(z.cards)
 
@@ -136,9 +132,7 @@ func (z *Pile) PickAllCardsFromPile() *Draw {
 	if len(z.cards) > 0 {
 		draw.Success = true
 		draw.Remaining = len(z.cards)
-		for _, pileCard := range z.cards {
-			draw.Cards = append(draw.Cards, pileCard)
-		}
+		draw.Cards = append(draw.Cards, z.cards...)
 	}
 	z.cards = make(Cards, 0)
 	draw.Success = true
