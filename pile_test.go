@@ -308,7 +308,7 @@ func TestGetCardAtID(t *testing.T) {
 		t.Logf("Pile not properly shuffled. Expected last two cards on an shuffled pile to not be JOKERS.\n")
 		t.FailNow()
 	}
-	card, err = pile.GetCardAtID(54)
+	_, err = pile.GetCardAtID(54)
 	if err == nil {
 		t.Logf("Did retrieve a card from the pile for a faulty id.\n")
 		t.FailNow()
