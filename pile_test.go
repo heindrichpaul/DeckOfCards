@@ -283,12 +283,34 @@ func TestPile_GetCardsFromPile(t *testing.T) {
 func TestShufflePile(t *testing.T) {
 	deck := NewDeckWithJokers(1)
 	t.Logf("Deck is being shuffled\n")
-	draw := deck.Draw(54)
+	draw := deck.Draw(deck.Remaining)
 	pile := NewPile()
 	pile.AddCardsToPile(draw, draw.Cards)
 	pile = ShufflePile(pile)
 	if strings.EqualFold(pile.cards[53].Value, "JOKER\n") && strings.EqualFold(pile.cards[53].Suit, "NONE") && strings.EqualFold(pile.cards[52].Value, "JOKER") && strings.EqualFold(pile.cards[52].Suit, "NONE") {
 		t.Logf("Pile not properly shuffled. Expected last two cards on an shuffled pile to not be JOKERS.\n")
+		t.FailNow()
+	}
+}
+
+func TestGetCardAtID(t *testing.T) {
+	deck := NewDeckWithJokers(1)
+	t.Logf("Deck is being shuffled\n")
+	draw := deck.Draw(deck.Remaining)
+	pile := NewPile()
+	pile.AddCardsToPile(draw, draw.Cards)
+	card, err := pile.GetCardAtID(53)
+	if err != nil {
+		t.Logf("Could not retrieve a card from the pile.\n")
+		t.FailNow()
+	}
+	if !strings.EqualFold(card.Value, "JOKER\n") && !strings.EqualFold(card.Suit, "NONE") {
+		t.Logf("Pile not properly shuffled. Expected last two cards on an shuffled pile to not be JOKERS.\n")
+		t.FailNow()
+	}
+	card, err = pile.GetCardAtID(54)
+	if err == nil {
+		t.Logf("Did retrieve a card from the pile for a faulty id.\n")
 		t.FailNow()
 	}
 }

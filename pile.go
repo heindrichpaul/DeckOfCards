@@ -177,3 +177,11 @@ func ShufflePile(pile *Pile) *Pile {
 	pile.cards = shuffle(pile.cards)
 	return pile
 }
+
+//GetCardAtID returns the card at the id from the pile.
+func (z *Pile) GetCardAtID(index int) (*Card, error) {
+	if index > len(z.cards)-1 || index < 0 {
+		return nil, fmt.Errorf("Index out of bounds")
+	}
+	return z.cards[index], nil
+}
