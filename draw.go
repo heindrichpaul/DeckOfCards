@@ -23,7 +23,7 @@ func (z *Draw) Marshal() ([]byte, error) {
 //Draw is a type that implements the structure of a Draw.
 type Draw struct {
 	Success   bool    `json:"success"`
-	Cards     []*Card `json:"cards"`
+	Cards     Cards `json:"cards"`
 	Remaining int     `json:"remaining"`
 }
 

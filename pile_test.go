@@ -250,7 +250,7 @@ func TestPile_GetCardsFromPile(t *testing.T) {
 		t.FailNow()
 	}
 
-	cardsToRequestFromPile := make([]*Card, 0)
+	cardsToRequestFromPile := make(Cards, 0)
 	if draw.Remaining >= amountOfCardsToDraw {
 		cardsToRequestFromPile = append(cardsToRequestFromPile, draw.Cards[(amountOfCardsToDraw/1)-1])
 		cardsToRequestFromPile = append(cardsToRequestFromPile, draw.Cards[amountOfCardsToDraw/2])

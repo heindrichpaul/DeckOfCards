@@ -127,11 +127,12 @@ func (z *Card) draw() *Card {
 
 func (z *Card) cloneCard() *Card {
 	card := &Card{
-		Code:  z.Code,
-		Image: z.Image,
-		Value: z.Value,
-		Suit:  z.Suit,
-		drawn: z.drawn,
+		DeckID: z.DeckID,
+		Code:   z.Code,
+		Image:  z.Image,
+		Value:  z.Value,
+		Suit:   z.Suit,
+		drawn:  z.drawn,
 	}
 
 	return card
