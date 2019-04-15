@@ -24,7 +24,6 @@ func (z *Pile) AddCardsToPile(draw *Draw, cards Cards) {
 				found := false
 				for _, f := range draw.Cards {
 					if f.Value == card.Value && f.Suit == card.Suit {
-						//						draw.Cards = append(draw.Cards[:i], draw.Cards[i+1:]...)
 						found = true
 					}
 				}
@@ -122,7 +121,7 @@ func (z *Pile) PickAmountOfCardsFromTopOfPile(amount int) *Draw {
 	return draw
 }
 
-//PickAllCardsFromPile returns all the cards in the pile as a Draw.
+//PickAllCardsFromPile returns all the cards in the pile as a Draw and clears the pile.
 func (z *Pile) PickAllCardsFromPile() *Draw {
 	draw := &Draw{
 		Success:   false,
@@ -183,5 +182,8 @@ func (z *Pile) GetCardAtID(index int) (*Card, error) {
 	if index > len(z.cards)-1 || index < 0 {
 		return nil, fmt.Errorf("Index out of bounds")
 	}
-	return z.cards[index], nil
+	card := z.cards[index]
+	z.cards = append(z.cards[:index], z.cards[index+1:]...)
+	z.Remaining = len(z.cards)
+	return card, nil
 }
