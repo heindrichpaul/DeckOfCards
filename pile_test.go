@@ -300,13 +300,17 @@ func TestGetCardAtID(t *testing.T) {
 	pile := NewPile()
 	pile.AddCardsToPile(draw, draw.Cards)
 	AmountOfCards := pile.Remaining
-	card, err := pile.GetCardAtID(53)
+	draw, err := pile.GetCardAtID(53)
 	if err != nil {
 		t.Logf("Could not retrieve a card from the pile.\n")
 		t.FailNow()
 	}
-	if !strings.EqualFold(card.Value, "JOKER\n") && !strings.EqualFold(card.Suit, "NONE") {
-		t.Logf("Pile not properly shuffled. Expected last two cards on an shuffled pile to not be JOKERS.\n")
+	if draw.Remaining != 1 {
+		t.Logf("The method drew the wrong amount of cards\n")
+		t.FailNow()
+	}
+	if !strings.EqualFold(draw.Cards[0].Value, "JOKER\n") && !strings.EqualFold(draw.Cards[0].Suit, "NONE") {
+		t.Logf("Pile not properly shuffled. Expected card to be a JOKERS.\n")
 		t.FailNow()
 	}
 	if AmountOfCards == pile.Remaining {

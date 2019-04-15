@@ -178,12 +178,19 @@ func ShufflePile(pile *Pile) *Pile {
 }
 
 //GetCardAtID returns the card at the id from the pile.
-func (z *Pile) GetCardAtID(index int) (*Card, error) {
+func (z *Pile) GetCardAtID(index int) (*Draw, error) {
 	if index > len(z.cards)-1 || index < 0 {
 		return nil, fmt.Errorf("Index out of bounds")
 	}
-	card := z.cards[index]
+	draw := &Draw{
+		Success:   false,
+		Cards:     make(Cards, 0),
+		Remaining: 0,
+	}
+	draw.Cards = append(draw.Cards, z.cards[index])
 	z.cards = append(z.cards[:index], z.cards[index+1:]...)
 	z.Remaining = len(z.cards)
-	return card, nil
+	draw.Remaining = len(draw.Cards)
+	draw.Success = true
+	return draw, nil
 }
