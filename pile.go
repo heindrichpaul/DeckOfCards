@@ -9,26 +9,13 @@ import (
 
 //Pile is a type that implements the structure of a Draw.
 type Pile struct {
-	stack     []*pileObject
+	cards     Cards
 	Remaining int
 	PileID    string
 }
 
-type pileObject struct {
-	deckID string
-	card   *Card
-}
-
-//String function serializes the Pile struct into a representable string output.
-func (z *pileObject) String() string {
-	var printString []string
-	printString = append(printString, z.card.String())
-
-	return strings.Join(printString, "\n")
-}
-
 //AddCardsToPile adds all the cards in the cards parameter that are present in the Draw to the pile.
-func (z *Pile) AddCardsToPile(draw *Draw, cards []*Card) {
+func (z *Pile) AddCardsToPile(draw *Draw, cards Cards) {
 
 	if draw != nil && draw.Success && len(draw.Cards) != 0 {
 		if len(draw.Cards) >= len(cards) {
@@ -37,30 +24,25 @@ func (z *Pile) AddCardsToPile(draw *Draw, cards []*Card) {
 				found := false
 				for _, f := range draw.Cards {
 					if f.Value == card.Value && f.Suit == card.Suit {
-						//						draw.Cards = append(draw.Cards[:i], draw.Cards[i+1:]...)
 						found = true
 					}
 				}
 				if found {
 					fmt.Println(card.DeckID)
-					p := &pileObject{
-						deckID: card.DeckID,
-						card:   card,
-					}
-					z.stack = append(z.stack, p)
+					z.cards = append(z.cards, card.cloneCard())
 				}
 			}
 		}
 	}
 
-	z.Remaining = len(z.stack)
+	z.Remaining = len(z.cards)
 }
 
 //NewPile creates a new Pile instance an returns a pointer to it.
 func NewPile() *Pile {
 	return &Pile{
 		PileID:    uuid.NewV4().String(),
-		stack:     make([]*pileObject, 0),
+		cards:     make(Cards, 0),
 		Remaining: 0,
 	}
 }
@@ -69,17 +51,17 @@ func (z *Pile) String() string {
 	var printString []string
 	printString = append(printString, fmt.Sprintf("PileID: %s", z.PileID))
 
-	for _, stackObject := range z.stack {
-		printString = append(printString, stackObject.String())
+	for _, pileCard := range z.cards {
+		printString = append(printString, pileCard.String())
 	}
 
 	return strings.Join(printString, "\n")
 }
 
 //RetrieveCardsInPile returns a copy of all cards in the pile
-func (z *Pile) RetrieveCardsInPile() (cards []*Card) {
-	for _, stackObject := range z.stack {
-		cards = append(cards, stackObject.card.cloneCard())
+func (z *Pile) RetrieveCardsInPile() (cards Cards) {
+	for _, pileCard := range z.cards {
+		cards = append(cards, pileCard.cloneCard())
 	}
 
 	return
@@ -89,7 +71,7 @@ func (z *Pile) RetrieveCardsInPile() (cards []*Card) {
 func (z *Pile) PickAmountOfCardsFromBottomOfPile(amount int) *Draw {
 	draw := &Draw{
 		Success:   false,
-		Cards:     make([]*Card, 0),
+		Cards:     make(Cards, 0),
 		Remaining: 0,
 	}
 
@@ -101,12 +83,10 @@ func (z *Pile) PickAmountOfCardsFromBottomOfPile(amount int) *Draw {
 		amount = z.Remaining
 	}
 
-	sliceOfStack := z.stack[z.Remaining-amount:]
-	for _, stackObject := range sliceOfStack {
-		draw.Cards = append(draw.Cards, stackObject.card)
-	}
-	z.stack = z.stack[:z.Remaining-amount]
-	z.Remaining = len(z.stack)
+	sliceOfCards := z.cards[z.Remaining-amount:]
+	draw.Cards = append(draw.Cards, sliceOfCards...)
+	z.cards = z.cards[:z.Remaining-amount]
+	z.Remaining = len(z.cards)
 
 	draw.Remaining = len(draw.Cards)
 	draw.Success = true
@@ -118,7 +98,7 @@ func (z *Pile) PickAmountOfCardsFromBottomOfPile(amount int) *Draw {
 func (z *Pile) PickAmountOfCardsFromTopOfPile(amount int) *Draw {
 	draw := &Draw{
 		Success:   false,
-		Cards:     make([]*Card, 0),
+		Cards:     make(Cards, 0),
 		Remaining: 0,
 	}
 
@@ -130,12 +110,10 @@ func (z *Pile) PickAmountOfCardsFromTopOfPile(amount int) *Draw {
 		amount = z.Remaining
 	}
 
-	sliceOfStack := z.stack[:amount]
-	for _, stackObject := range sliceOfStack {
-		draw.Cards = append(draw.Cards, stackObject.card)
-	}
-	z.stack = z.stack[amount:]
-	z.Remaining = len(z.stack)
+	sliceOfCards := z.cards[:amount]
+	draw.Cards = append(draw.Cards, sliceOfCards...)
+	z.cards = z.cards[amount:]
+	z.Remaining = len(z.cards)
 
 	draw.Remaining = len(draw.Cards)
 	draw.Success = true
@@ -143,45 +121,43 @@ func (z *Pile) PickAmountOfCardsFromTopOfPile(amount int) *Draw {
 	return draw
 }
 
-//PickAllCardsFromPile returns all the cards in the pile as a Draw.
+//PickAllCardsFromPile returns all the cards in the pile as a Draw and clears the pile.
 func (z *Pile) PickAllCardsFromPile() *Draw {
 	draw := &Draw{
 		Success:   false,
-		Cards:     make([]*Card, 0),
+		Cards:     make(Cards, 0),
 		Remaining: 0,
 	}
-	if len(z.stack) > 0 {
+	if len(z.cards) > 0 {
 		draw.Success = true
-		draw.Remaining = len(z.stack)
-		for _, stackObject := range z.stack {
-			draw.Cards = append(draw.Cards, stackObject.card)
-		}
+		draw.Remaining = len(z.cards)
+		draw.Cards = append(draw.Cards, z.cards...)
 	}
-	z.stack = make([]*pileObject, 0)
+	z.cards = make(Cards, 0)
 	draw.Success = true
 	return draw
 }
 
 //GetCardsFromPile returns the specified cards from the pile as a Draw.
-func (z *Pile) GetCardsFromPile(cards []*Card) *Draw {
+func (z *Pile) GetCardsFromPile(cards Cards) *Draw {
 	draw := &Draw{
 		Success:   false,
-		Cards:     make([]*Card, 0),
+		Cards:     make(Cards, 0),
 		Remaining: 0,
 	}
-	if len(z.stack) > 0 && len(cards) <= len(z.stack) {
-		var tempCards []*Card
+	if len(z.cards) > 0 && len(cards) <= len(z.cards) {
+		var tempCards Cards
 		for _, card := range cards {
-			for _, stackObject := range z.stack {
-				if strings.EqualFold(stackObject.card.Suit, card.Suit) && strings.EqualFold(stackObject.card.Value, card.Value) {
-					tempCards = append(tempCards, stackObject.card)
+			for _, pileCard := range z.cards {
+				if strings.EqualFold(pileCard.Suit, card.Suit) && strings.EqualFold(pileCard.Value, card.Value) {
+					tempCards = append(tempCards, pileCard)
 				}
 			}
 		}
 		for _, card := range cards {
-			for i, stackObject := range z.stack {
-				if strings.EqualFold(stackObject.card.Suit, card.Suit) && strings.EqualFold(stackObject.card.Value, card.Value) {
-					z.stack = append(z.stack[:i], z.stack[i+1:]...)
+			for i, pileCard := range z.cards {
+				if strings.EqualFold(pileCard.Suit, card.Suit) && strings.EqualFold(pileCard.Value, card.Value) {
+					z.cards = append(z.cards[:i], z.cards[i+1:]...)
 				}
 			}
 		}
@@ -193,4 +169,28 @@ func (z *Pile) GetCardsFromPile(cards []*Card) *Draw {
 
 	}
 	return draw
+}
+
+//ShufflePile returns a shuffled pile
+func ShufflePile(pile *Pile) *Pile {
+	pile.cards = shuffle(pile.cards)
+	return pile
+}
+
+//GetCardAtID returns the card at the id from the pile.
+func (z *Pile) GetCardAtID(index int) (*Draw, error) {
+	if index > len(z.cards)-1 || index < 0 {
+		return nil, fmt.Errorf("Index out of bounds")
+	}
+	draw := &Draw{
+		Success:   false,
+		Cards:     make(Cards, 0),
+		Remaining: 0,
+	}
+	draw.Cards = append(draw.Cards, z.cards[index])
+	z.cards = append(z.cards[:index], z.cards[index+1:]...)
+	z.Remaining = len(z.cards)
+	draw.Remaining = len(draw.Cards)
+	draw.Success = true
+	return draw, nil
 }

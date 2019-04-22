@@ -3,7 +3,6 @@ package deckofcards
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	"strconv"
 	"strings"
 
@@ -33,7 +32,7 @@ type Deck struct {
 	DeckID    string `json:"deckId"`
 	Success   bool   `json:"success"`
 	Shuffled  bool   `json:"shuffled"`
-	cards     []*Card
+	cards     Cards
 }
 
 /*NewDeck creates an unshuffled amount of decks requested by the parameter (amount).
@@ -47,7 +46,7 @@ func NewDeck(amount int) *Deck {
 			Success:   false,
 			Shuffled:  false,
 			Remaining: 0,
-			cards:     make([]*Card, 0),
+			cards:     make(Cards, 0),
 		}
 
 	}
@@ -66,7 +65,7 @@ func NewDeckWithJokers(amount int) *Deck {
 			Success:   false,
 			Shuffled:  false,
 			Remaining: 0,
-			cards:     make([]*Card, 0),
+			cards:     make(Cards, 0),
 		}
 	}
 
@@ -79,7 +78,7 @@ func newDeck(amount int, jokers bool) (deck *Deck, err error) {
 		Success:   false,
 		Shuffled:  false,
 		Remaining: 0,
-		cards:     make([]*Card, 0),
+		cards:     make(Cards, 0),
 	}
 
 	for deckNum := 0; deckNum < amount; deckNum++ {
@@ -146,16 +145,7 @@ func newDeck(amount int, jokers bool) (deck *Deck, err error) {
 
 //ShuffleDeck shuffles the deck that has been passed as a parameter.
 func ShuffleDeck(deck *Deck) *Deck {
-	for i := 1; i < len(deck.cards); i++ {
-		// Create a random int up to the number of cards
-		r := rand.Intn(i + 1)
-
-		// If the the current card doesn't match the random
-		// int we generated then we'll switch them out
-		if i != r {
-			deck.cards[r], deck.cards[i] = deck.cards[i], deck.cards[r]
-		}
-	}
+	deck.cards = shuffle(deck.cards)
 	for _, card := range deck.cards {
 		card.drawn = false
 	}
@@ -166,7 +156,7 @@ func ShuffleDeck(deck *Deck) *Deck {
 //Draw draws the amount of requested cards from the current deck.
 func (z *Deck) Draw(amount int) (draw *Draw) {
 	draw = &Draw{
-		Cards:     make([]*Card, 0),
+		Cards:     make(Cards, 0),
 		Remaining: 0,
 		Success:   false,
 	}
@@ -178,7 +168,7 @@ func (z *Deck) Draw(amount int) (draw *Draw) {
 		return
 	}
 
-	var cards []*Card
+	var cards Cards
 
 	i := 0
 

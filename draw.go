@@ -22,9 +22,9 @@ func (z *Draw) Marshal() ([]byte, error) {
 
 //Draw is a type that implements the structure of a Draw.
 type Draw struct {
-	Success   bool    `json:"success"`
-	Cards     []*Card `json:"cards"`
-	Remaining int     `json:"remaining"`
+	Success   bool  `json:"success"`
+	Cards     Cards `json:"cards"`
+	Remaining int   `json:"remaining"`
 }
 
 //String function serializes the Draw struct into a representable string output.

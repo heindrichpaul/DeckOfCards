@@ -250,7 +250,7 @@ func TestPile_GetCardsFromPile(t *testing.T) {
 		t.FailNow()
 	}
 
-	cardsToRequestFromPile := make([]*Card, 0)
+	cardsToRequestFromPile := make(Cards, 0)
 	if draw.Remaining >= amountOfCardsToDraw {
 		cardsToRequestFromPile = append(cardsToRequestFromPile, draw.Cards[(amountOfCardsToDraw/1)-1])
 		cardsToRequestFromPile = append(cardsToRequestFromPile, draw.Cards[amountOfCardsToDraw/2])
@@ -276,6 +276,50 @@ func TestPile_GetCardsFromPile(t *testing.T) {
 	}
 	if !found {
 		t.Logf("Not all cards requested cards were in the draw.\n")
+		t.FailNow()
+	}
+}
+
+func TestShufflePile(t *testing.T) {
+	deck := NewDeckWithJokers(1)
+	t.Logf("Deck is being shuffled\n")
+	draw := deck.Draw(deck.Remaining)
+	pile := NewPile()
+	pile.AddCardsToPile(draw, draw.Cards)
+	pile = ShufflePile(pile)
+	if strings.EqualFold(pile.cards[53].Value, "JOKER\n") && strings.EqualFold(pile.cards[53].Suit, "NONE") && strings.EqualFold(pile.cards[52].Value, "JOKER") && strings.EqualFold(pile.cards[52].Suit, "NONE") {
+		t.Logf("Pile not properly shuffled. Expected last two cards on an shuffled pile to not be JOKERS.\n")
+		t.FailNow()
+	}
+}
+
+func TestGetCardAtID(t *testing.T) {
+	deck := NewDeckWithJokers(1)
+	t.Logf("Deck is being shuffled\n")
+	draw := deck.Draw(deck.Remaining)
+	pile := NewPile()
+	pile.AddCardsToPile(draw, draw.Cards)
+	AmountOfCards := pile.Remaining
+	draw, err := pile.GetCardAtID(53)
+	if err != nil {
+		t.Logf("Could not retrieve a card from the pile.\n")
+		t.FailNow()
+	}
+	if draw.Remaining != 1 {
+		t.Logf("The method drew the wrong amount of cards\n")
+		t.FailNow()
+	}
+	if !strings.EqualFold(draw.Cards[0].Value, "JOKER\n") && !strings.EqualFold(draw.Cards[0].Suit, "NONE") {
+		t.Logf("Pile not properly shuffled. Expected card to be a JOKERS.\n")
+		t.FailNow()
+	}
+	if AmountOfCards == pile.Remaining {
+		t.Logf("Did not remove the card from the pile which was returned.\n")
+		t.FailNow()
+	}
+	_, err = pile.GetCardAtID(54)
+	if err == nil {
+		t.Logf("Did retrieve a card from the pile for a faulty id.\n")
 		t.FailNow()
 	}
 }
