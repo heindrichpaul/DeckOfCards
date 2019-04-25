@@ -1,6 +1,7 @@
 package deckofcards
 
 import (
+	"fmt"
 	"strings"
 
 	jsoniter "github.com/json-iterator/go"
@@ -30,10 +31,9 @@ type Draw struct {
 //String function serializes the Draw struct into a representable string output.
 func (z *Draw) String() string {
 	var printString []string
-
-	for _, card := range z.Cards {
-		printString = append(printString, card.String())
-	}
+	printString = append(printString, fmt.Sprintf("Success: %t", z.Success))
+	printString = append(printString, fmt.Sprintf("Remaining: %d", z.Remaining))
+	printString = append(printString, z.Cards.String())
 
 	return strings.Join(printString, "\n")
 

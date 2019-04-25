@@ -140,10 +140,7 @@ func (z *Deck) Draw(amount int) (draw *Draw) {
 		Success:   false,
 	}
 
-	if z.Remaining == 0 {
-		return
-	}
-	if amount <= 0 {
+	if z.Remaining == 0 || amount <= 0 {
 		return
 	}
 
@@ -170,12 +167,7 @@ func (z *Deck) String() string {
 	printString = append(printString, fmt.Sprintf("Success: %t", z.Success))
 	printString = append(printString, fmt.Sprintf("Shuffled: %t", z.Shuffled))
 	printString = append(printString, fmt.Sprintf("Remaining: %d", z.Remaining))
-
-	for _, card := range z.cards {
-		if !card.drawn {
-			printString = append(printString, card.String())
-		}
-	}
+	printString = append(printString, z.cards.String())
 
 	return strings.Join(printString, "\n")
 }
