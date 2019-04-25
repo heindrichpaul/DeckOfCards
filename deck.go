@@ -39,18 +39,7 @@ type Deck struct {
 These decks do not contain jokers.*/
 func NewDeck(amount int) *Deck {
 	deck, err := newDeck(amount, false)
-	if err != nil {
-		log.Printf("Failed to create the deck: %s", err.Error())
-		deck = &Deck{
-			DeckID:    "",
-			Success:   false,
-			Shuffled:  false,
-			Remaining: 0,
-			cards:     make(Cards, 0),
-		}
-
-	}
-
+	deck = parseDeckCreation(deck, err)
 	return deck
 }
 
@@ -58,17 +47,7 @@ func NewDeck(amount int) *Deck {
 These decks do contain jokers.*/
 func NewDeckWithJokers(amount int) *Deck {
 	deck, err := newDeck(amount, true)
-	if err != nil {
-		log.Printf("Failed to create the deck: %s", err.Error())
-		deck = &Deck{
-			DeckID:    "",
-			Success:   false,
-			Shuffled:  false,
-			Remaining: 0,
-			cards:     make(Cards, 0),
-		}
-	}
-
+	deck = parseDeckCreation(deck, err)
 	return deck
 }
 
@@ -168,27 +147,19 @@ func (z *Deck) Draw(amount int) (draw *Draw) {
 		return
 	}
 
-	var cards Cards
-
-	i := 0
-
 	if amount > z.Remaining {
 		amount = z.Remaining
 	}
 
-	for _, card := range z.cards {
-		if !card.drawn {
-			if i == amount {
-				break
-			}
-			cards = append(cards, card.draw())
+	for i := 0; i < amount; i++ {
+		if !z.cards[i].drawn {
+			draw.Cards = append(draw.Cards, z.cards[i].draw())
 			z.Remaining--
-			i++
 		}
 	}
-	draw.Cards = cards
+
 	draw.Success = true
-	draw.Remaining = z.Remaining
+	draw.Remaining = amount
 	return
 }
 
@@ -207,4 +178,20 @@ func (z *Deck) String() string {
 	}
 
 	return strings.Join(printString, "\n")
+}
+
+func parseDeckCreation(deck *Deck, err error) *Deck {
+	if err != nil {
+		log.Printf("Failed to create the deck: %s", err.Error())
+		d := &Deck{
+			DeckID:    "",
+			Success:   false,
+			Shuffled:  false,
+			Remaining: 0,
+			cards:     make(Cards, 0),
+		}
+		return d
+	}
+	return deck
+
 }

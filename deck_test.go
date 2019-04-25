@@ -209,7 +209,7 @@ func TestDrawWithValidNumber(t *testing.T) {
 		t.Logf("The draw reports it was not successful\n")
 		t.FailNow()
 	}
-	if draw.Remaining != deck.Remaining {
+	if draw.Remaining != 2 {
 		t.Logf("The draw's Remaining and the deck's Remaining cards does not match.\n")
 		t.FailNow()
 	}
@@ -233,7 +233,7 @@ func TestDrawWithMoreThanRemainingNumberOfCards(t *testing.T) {
 		t.Logf("The draw reports it was not successful\n")
 		t.FailNow()
 	}
-	if draw.Remaining != deck.Remaining {
+	if draw.Remaining != remaining {
 		t.Logf("The draw's Remaining and the deck's Remaining cards does not match.\n")
 		t.FailNow()
 	}

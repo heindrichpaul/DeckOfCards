@@ -140,22 +140,10 @@ func (z *Card) cloneCard() *Card {
 
 //Equals function compares two cards with each other.
 func (z *Card) Equals(card *Card) bool {
-	if z.Code != card.Code {
-		return false
+	if z.Code == card.Code && z.Image == card.Image && z.Value == card.Value && z.Suit == card.Suit && z.drawn == card.drawn {
+		return true
 	}
-	if z.Image != card.Image {
-		return false
-	}
-	if z.Value != card.Value {
-		return false
-	}
-	if z.Suit != card.Suit {
-		return false
-	}
-	if z.drawn != card.drawn {
-		return false
-	}
-	return true
+	return false
 }
 
 func (z *cardError) Error() string {
