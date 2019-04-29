@@ -2,7 +2,6 @@ package deckofcards
 
 import (
 	"fmt"
-	"net/http"
 	"strconv"
 	"strings"
 	"testing"
@@ -46,16 +45,6 @@ func cardCreatorHelper(deckID, suit, value string, t *testing.T) {
 	if card.drawn {
 		t.Logf("Failed to verify card drawn flag for: %s%s expected: false but received: %t\n", value, suit, card.drawn)
 		t.FailNow()
-	}
-
-	if strings.Compare(card.Image, "") != 0 {
-		resp, err := http.Get(card.Image)
-		if err != nil {
-			t.Error(err.Error())
-		}
-		if resp.StatusCode != 200 {
-			t.Errorf("Unable to find image %s\n", card.Image)
-		}
 	}
 
 	if !strings.EqualFold(card.DeckID, TestDECKID) {
@@ -196,10 +185,6 @@ func TestDraw(t *testing.T) {
 		t.Logf("expected:[%s] but received:[%s]\n", card.Code, drawnCard.Code)
 		t.FailNow()
 	}
-	if !strings.EqualFold(drawnCard.Image, card.Image) {
-		t.Logf("expected:[%s] but received:[%s]\n", card.Image, drawnCard.Image)
-		t.FailNow()
-	}
 	if !strings.EqualFold(drawnCard.Value, card.Value) {
 		t.Logf("expected:[%s] but received:[%s]\n", card.Value, drawnCard.Value)
 		t.FailNow()
@@ -246,11 +231,6 @@ func TestEquals(t *testing.T) {
 	}
 
 	clone = card.cloneCard()
-	clone.Image = "2"
-	if card.Equals(clone) {
-		t.Logf("The two cards do match after altering the clone.\n")
-		t.FailNow()
-	}
 
 	clone = card.cloneCard()
 	clone.Suit = "3"
