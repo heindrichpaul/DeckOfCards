@@ -1,6 +1,7 @@
 package deckofcards
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -302,6 +303,20 @@ func TestGetCardAtID(t *testing.T) {
 	_, err = pile.GetCardAtID(54)
 	if err == nil {
 		t.Logf("Did retrieve a card from the pile for a faulty id.\n")
+		t.FailNow()
+	}
+}
+
+func TestPileString(t *testing.T) {
+	deck := NewDeckWithJokers(1)
+	draw := deck.Draw(deck.Remaining)
+	pile := NewPile()
+	pile.AddCardsToPile(draw, draw.Cards)
+
+	actualString := pile.String()
+	expectedString := fmt.Sprintf("PileID: %s\n%s", pile.PileID, pile.cards.String())
+	if !strings.EqualFold(actualString, expectedString) {
+		t.Logf("expected:[%s] but received:[%s]\n", expectedString, actualString)
 		t.FailNow()
 	}
 }

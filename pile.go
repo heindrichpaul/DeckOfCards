@@ -49,10 +49,7 @@ func NewPile() *Pile {
 func (z *Pile) String() string {
 	var printString []string
 	printString = append(printString, fmt.Sprintf("PileID: %s", z.PileID))
-
-	for _, pileCard := range z.cards {
-		printString = append(printString, pileCard.String())
-	}
+	printString = append(printString, z.cards.String())
 
 	return strings.Join(printString, "\n")
 }
