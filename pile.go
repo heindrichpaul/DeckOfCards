@@ -18,19 +18,8 @@ type Pile struct {
 func (z *Pile) AddCardsToPile(draw *Draw, cards Cards) {
 
 	if draw != nil && draw.Success && len(draw.Cards) != 0 {
-		if len(draw.Cards) >= len(cards) {
-
-			for _, card := range cards {
-				found := false
-				for _, f := range draw.Cards {
-					if f.Value == card.Value && f.Suit == card.Suit {
-						found = true
-					}
-				}
-				if found {
-					z.cards = append(z.cards, card.cloneCard())
-				}
-			}
+		if len(draw.Cards) >= len(cards) && draw.AreAllCardsInThisDraw(cards) {
+			z.cards = append(z.cards, cards...)
 		}
 	}
 

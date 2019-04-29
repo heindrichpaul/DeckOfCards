@@ -61,65 +61,15 @@ func newDeck(amount int, jokers bool) (deck *Deck, err error) {
 	}
 
 	for deckNum := 0; deckNum < amount; deckNum++ {
-		for _, suit := range suits {
-			//ACE
-			card, err := newCard(deck.DeckID, "A", suit)
-			if err != nil {
-				return nil, err
-			}
-			deck.cards = append(deck.cards, card)
-			deck.Remaining++
-			//NUMERICAL CARDS
-			for i := 2; i < 10; i++ {
-				card, err = newCard(deck.DeckID, strconv.Itoa(i), suit)
-				if err == nil {
-					deck.cards = append(deck.cards, card)
-					deck.Remaining++
-				}
-			}
-			//TEN
-			card, err = newCard(deck.DeckID, "0", suit)
-			if err == nil {
-				deck.cards = append(deck.cards, card)
-				deck.Remaining++
-			}
-			//JACK
-			card, err = newCard(deck.DeckID, "J", suit)
-			if err == nil {
-				deck.cards = append(deck.cards, card)
-				deck.Remaining++
-			}
-			//QUEEN
-			card, err = newCard(deck.DeckID, "Q", suit)
-			if err == nil {
-				deck.cards = append(deck.cards, card)
-				deck.Remaining++
-			}
-			//KING
-			card, err = newCard(deck.DeckID, "K", suit)
-			if err == nil {
-				deck.cards = append(deck.cards, card)
-				deck.Remaining++
-			}
-		}
-		if jokers {
-			card, err := newCard(deck.DeckID, "*", "*")
-			if err == nil {
-				deck.cards = append(deck.cards, card)
-				deck.Remaining++
-			}
-			card, err = newCard(deck.DeckID, "*", "*")
-			if err == nil {
-				deck.cards = append(deck.cards, card)
-				deck.Remaining++
-			}
+		if err := createDeck(deck, jokers); err != nil {
+			return nil, err
 		}
 	}
 	if deck.Remaining == len(deck.cards) && deck.Remaining > 0 {
 		deck.Success = true
 		deck.Shuffled = false
 	}
-	return deck, nil
+	return
 }
 
 //ShuffleDeck shuffles the deck that has been passed as a parameter.
@@ -186,4 +136,66 @@ func parseDeckCreation(deck *Deck, err error) *Deck {
 	}
 	return deck
 
+}
+
+func createDeck(deck *Deck, jokers bool) (err error) {
+	for _, suit := range suits {
+		//ACE
+		card, err := newCard(deck.DeckID, "A", suit)
+		if err != nil {
+			return err
+		}
+		deck.cards = append(deck.cards, card)
+		deck.Remaining++
+		//NUMERICAL CARDS
+		for i := 2; i < 10; i++ {
+			card, err = newCard(deck.DeckID, strconv.Itoa(i), suit)
+			if err == nil {
+				deck.cards = append(deck.cards, card)
+				deck.Remaining++
+			}
+		}
+		//TEN
+		card, err = newCard(deck.DeckID, "0", suit)
+		if err == nil {
+			deck.cards = append(deck.cards, card)
+			deck.Remaining++
+		}
+		//JACK
+		card, err = newCard(deck.DeckID, "J", suit)
+		if err == nil {
+			deck.cards = append(deck.cards, card)
+			deck.Remaining++
+		}
+		//QUEEN
+		card, err = newCard(deck.DeckID, "Q", suit)
+		if err == nil {
+			deck.cards = append(deck.cards, card)
+			deck.Remaining++
+		}
+		//KING
+		card, err = newCard(deck.DeckID, "K", suit)
+		if err == nil {
+			deck.cards = append(deck.cards, card)
+			deck.Remaining++
+		}
+	}
+
+	return addJokersToDeck(deck, jokers)
+}
+
+func addJokersToDeck(deck *Deck, jokers bool) (err error) {
+	if jokers {
+		card, err := newCard(deck.DeckID, "*", "*")
+		if err == nil {
+			deck.cards = append(deck.cards, card)
+			deck.Remaining++
+		}
+		card, err = newCard(deck.DeckID, "*", "*")
+		if err == nil {
+			deck.cards = append(deck.cards, card)
+			deck.Remaining++
+		}
+	}
+	return
 }
