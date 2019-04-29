@@ -232,8 +232,6 @@ func TestEquals(t *testing.T) {
 	}
 
 	clone = card.cloneCard()
-
-	clone = card.cloneCard()
 	clone.Suit = "3"
 	if card.Equals(clone) {
 		t.Logf("The two cards do match after altering the clone.\n")
