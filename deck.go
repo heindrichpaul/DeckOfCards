@@ -140,48 +140,18 @@ func parseDeckCreation(deck *Deck, err error) *Deck {
 
 func createDeck(deck *Deck, jokers bool) (err error) {
 	for _, suit := range suits {
-		//ACE
-		card, err := newCard(deck.DeckID, "A", suit)
-		if err != nil {
+		if err = addAceToDeck(deck, suit); err != nil {
 			return err
 		}
-		deck.cards = append(deck.cards, card)
-		deck.Remaining++
-		//NUMERICAL CARDS
-		for i := 2; i < 10; i++ {
-			card, err = newCard(deck.DeckID, strconv.Itoa(i), suit)
-			if err == nil {
-				deck.cards = append(deck.cards, card)
-				deck.Remaining++
-			}
+		if err = addNumericCardsToDeck(deck, suit); err != nil {
+			return err
 		}
-		//TEN
-		card, err = newCard(deck.DeckID, "0", suit)
-		if err == nil {
-			deck.cards = append(deck.cards, card)
-			deck.Remaining++
-		}
-		//JACK
-		card, err = newCard(deck.DeckID, "J", suit)
-		if err == nil {
-			deck.cards = append(deck.cards, card)
-			deck.Remaining++
-		}
-		//QUEEN
-		card, err = newCard(deck.DeckID, "Q", suit)
-		if err == nil {
-			deck.cards = append(deck.cards, card)
-			deck.Remaining++
-		}
-		//KING
-		card, err = newCard(deck.DeckID, "K", suit)
-		if err == nil {
-			deck.cards = append(deck.cards, card)
-			deck.Remaining++
+		if err = addPictureCardsToDeck(deck, suit); err != nil {
+			return err
 		}
 	}
-
-	return addJokersToDeck(deck, jokers)
+	err = addJokersToDeck(deck, jokers)
+	return
 }
 
 func addJokersToDeck(deck *Deck, jokers bool) (err error) {
@@ -197,5 +167,57 @@ func addJokersToDeck(deck *Deck, jokers bool) (err error) {
 			deck.Remaining++
 		}
 	}
+	return
+}
+
+func addPictureCardsToDeck(deck *Deck, suit string) (err error) {
+	//JACK
+	card, err := newCard(deck.DeckID, "J", suit)
+	if err == nil {
+		deck.cards = append(deck.cards, card)
+		deck.Remaining++
+	}
+	//QUEEN
+	card, err = newCard(deck.DeckID, "Q", suit)
+	if err == nil {
+		deck.cards = append(deck.cards, card)
+		deck.Remaining++
+	}
+	//KING
+	card, err = newCard(deck.DeckID, "K", suit)
+	if err == nil {
+		deck.cards = append(deck.cards, card)
+		deck.Remaining++
+	}
+	return
+}
+
+func addAceToDeck(deck *Deck, suit string) (err error) {
+	//ACE
+	card, err := newCard(deck.DeckID, "A", suit)
+	if err == nil {
+		deck.cards = append(deck.cards, card)
+		deck.Remaining++
+	}
+	return
+}
+
+func addNumericCardsToDeck(deck *Deck, suit string) (err error) {
+	//NUMERICAL CARDS
+	for i := 2; i < 10; i++ {
+		card, err := newCard(deck.DeckID, strconv.Itoa(i), suit)
+		if err != nil {
+			return err
+		}
+		deck.cards = append(deck.cards, card)
+		deck.Remaining++
+	}
+	//TEN
+	card, err := newCard(deck.DeckID, "0", suit)
+	if err != nil {
+		return err
+	}
+	deck.cards = append(deck.cards, card)
+	deck.Remaining++
 	return
 }
