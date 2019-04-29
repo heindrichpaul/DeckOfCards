@@ -143,12 +143,9 @@ func createDeck(deck *Deck, jokers bool) (err error) {
 		if err = addAceToDeck(deck, suit); err != nil {
 			return err
 		}
-		if err = addNumericCardsToDeck(deck, suit); err != nil {
-			return err
-		}
-		if err = addPictureCardsToDeck(deck, suit); err != nil {
-			return err
-		}
+		//As all errors are handled in the method that adds aces
+		addNumericCardsToDeck(deck, suit)
+		addPictureCardsToDeck(deck, suit)
 	}
 	err = addJokersToDeck(deck, jokers)
 	return
@@ -170,7 +167,7 @@ func addJokersToDeck(deck *Deck, jokers bool) (err error) {
 	return
 }
 
-func addPictureCardsToDeck(deck *Deck, suit string) (err error) {
+func addPictureCardsToDeck(deck *Deck, suit string) {
 	//JACK
 	card, err := newCard(deck.DeckID, "J", suit)
 	if err == nil {
@@ -189,7 +186,6 @@ func addPictureCardsToDeck(deck *Deck, suit string) (err error) {
 		deck.cards = append(deck.cards, card)
 		deck.Remaining++
 	}
-	return
 }
 
 func addAceToDeck(deck *Deck, suit string) (err error) {
@@ -202,7 +198,7 @@ func addAceToDeck(deck *Deck, suit string) (err error) {
 	return
 }
 
-func addNumericCardsToDeck(deck *Deck, suit string) (err error) {
+func addNumericCardsToDeck(deck *Deck, suit string) {
 	//NUMERICAL CARDS
 	for i := 2; i < 10; i++ {
 		card, err := newCard(deck.DeckID, strconv.Itoa(i), suit)
@@ -217,5 +213,4 @@ func addNumericCardsToDeck(deck *Deck, suit string) (err error) {
 		deck.cards = append(deck.cards, card)
 		deck.Remaining++
 	}
-	return
 }
