@@ -41,12 +41,12 @@ func (z *Draw) String() string {
 
 //AreAllCardsInThisDraw returns true if all the cards in the cards slice are in the draw.
 func (z *Draw) AreAllCardsInThisDraw(cards Cards) bool {
-	for c := 0; c < len(cards); c++ {
-		for d := 0; d < len(z.Cards); d++ {
-			if cards[c].Equals(z.Cards[d]) {
+	for _, cardFromCards := range cards {
+		for d, cardFromDraw := range z.Cards {
+			if cardFromCards.Equals(cardFromDraw) {
 				break
 			}
-			if d == len(z.Cards)-1 && !cards[c].Equals(z.Cards[d]) {
+			if d == len(z.Cards)-1 && !cardFromCards.Equals(cardFromDraw) {
 				return false
 			}
 		}
