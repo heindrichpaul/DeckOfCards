@@ -180,7 +180,6 @@ func TestShuffleDeck(t *testing.T) {
 
 func TestDrawWithValidNumber(t *testing.T) {
 	deck := NewDeckWithJokers(1)
-	fmt.Printf("Deck before draw:\n%s", deck)
 	remaining := deck.Remaining
 	drawAmount := 2
 	codeOfCard1, codeOfCard2 := deck.cards[0].Code, deck.cards[1].Code
@@ -193,8 +192,6 @@ func TestDrawWithValidNumber(t *testing.T) {
 		t.Logf("The length of the drawn cards is not the same as the amount we drew.\n")
 		t.FailNow()
 	}
-	fmt.Printf("Deck after draw:\n%s", deck)
-	fmt.Printf("Draw:\n%s", draw)
 	if !deck.cards[0].drawn && !deck.cards[1].drawn {
 		t.Logf("The cards that should have been drawn is not\n")
 		t.FailNow()

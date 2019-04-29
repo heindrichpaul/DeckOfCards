@@ -28,7 +28,6 @@ func (z *Pile) AddCardsToPile(draw *Draw, cards Cards) {
 					}
 				}
 				if found {
-					fmt.Println(card.DeckID)
 					z.cards = append(z.cards, card.cloneCard())
 				}
 			}
@@ -148,19 +147,15 @@ func (z *Pile) GetCardsFromPile(cards Cards) *Draw {
 	if len(z.cards) > 0 && len(cards) <= len(z.cards) {
 		var tempCards Cards
 		for _, card := range cards {
-			for _, pileCard := range z.cards {
-				if strings.EqualFold(pileCard.Suit, card.Suit) && strings.EqualFold(pileCard.Value, card.Value) {
-					tempCards = append(tempCards, pileCard)
-				}
-			}
-		}
-		for _, card := range cards {
 			for i, pileCard := range z.cards {
-				if strings.EqualFold(pileCard.Suit, card.Suit) && strings.EqualFold(pileCard.Value, card.Value) {
+				if card.Equals(pileCard) {
+					tempCards = append(tempCards, pileCard)
 					z.cards = append(z.cards[:i], z.cards[i+1:]...)
+					z.Remaining--
 				}
 			}
 		}
+
 		if len(cards) == len(tempCards) {
 			draw.Success = true
 			draw.Remaining = len(cards)

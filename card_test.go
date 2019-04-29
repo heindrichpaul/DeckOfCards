@@ -158,9 +158,10 @@ func TestCardString(t *testing.T) {
 		t.FailNow()
 	}
 	actualString := card.String()
-	expectedString := fmt.Sprintf("%s - %s", card.Suit, card.Value)
+	expectedString := fmt.Sprintf("DeckID: %s\n%s - %s", card.DeckID, card.Suit, card.Value)
 	if !strings.EqualFold(actualString, expectedString) {
 		t.Logf("expected:[%s] but received:[%s]\n", expectedString, actualString)
+		t.FailNow()
 	}
 }
 
