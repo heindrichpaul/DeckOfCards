@@ -206,18 +206,16 @@ func addNumericCardsToDeck(deck *Deck, suit string) (err error) {
 	//NUMERICAL CARDS
 	for i := 2; i < 10; i++ {
 		card, err := newCard(deck.DeckID, strconv.Itoa(i), suit)
-		if err != nil {
-			return err
+		if err == nil {
+			deck.cards = append(deck.cards, card)
+			deck.Remaining++
 		}
-		deck.cards = append(deck.cards, card)
-		deck.Remaining++
 	}
 	//TEN
 	card, err := newCard(deck.DeckID, "0", suit)
-	if err != nil {
-		return err
+	if err == nil {
+		deck.cards = append(deck.cards, card)
+		deck.Remaining++
 	}
-	deck.cards = append(deck.cards, card)
-	deck.Remaining++
 	return
 }

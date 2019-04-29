@@ -54,3 +54,28 @@ func TestDrawString(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+func TestAreAllCardsInThisDraw(t *testing.T) {
+	deck := NewDeckWithJokers(1)
+	draw := deck.Draw(deck.Remaining)
+	if !draw.AreAllCardsInThisDraw(draw.Cards) {
+		t.Logf("All cards in a draw should be present in itself")
+		t.FailNow()
+	}
+}
+
+func TestAreAllCardsInThisDrawNegativeTest(t *testing.T) {
+	deck := NewDeck(1)
+	draw := deck.Draw(deck.Remaining)
+	card, err := newCard(deck.DeckID, "*", "*")
+	if err != nil {
+		t.Logf("Failed to create joker card")
+		t.FailNow()
+	}
+	var cards Cards
+	cards = append(cards, card)
+	if draw.AreAllCardsInThisDraw(cards) {
+		t.Logf("All cards from a deck without jockers should not contain a jocker")
+		t.FailNow()
+	}
+}
