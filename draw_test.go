@@ -1,6 +1,8 @@
 package deckofcards
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -39,4 +41,16 @@ func TestMarshallingOfDraw(t *testing.T) {
 
 	}
 
+}
+
+func TestDrawString(t *testing.T) {
+	deck := NewDeckWithJokers(1)
+	draw := deck.Draw(deck.Remaining)
+
+	actualString := draw.String()
+	expectedString := fmt.Sprintf("Success: %t\nRemaining: %d\n%s", draw.Success, draw.Remaining, draw.Cards.String())
+	if !strings.EqualFold(actualString, expectedString) {
+		t.Logf("expected:[%s] but received:[%s]\n", expectedString, actualString)
+		t.FailNow()
+	}
 }
