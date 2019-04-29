@@ -25,16 +25,13 @@ func TestAddCardsToPile(t *testing.T) {
 		t.FailNow()
 	}
 
-	fmt.Printf("%s\n", deck.String())
 	pile := NewPile()
 	draw := deck.Draw(6)
 	if !draw.Success {
 		t.Logf("Failed to draw from deck\n")
 		t.FailNow()
 	}
-	fmt.Printf("%s\n", pile.String())
 	pile.AddCardsToPile(draw, draw.Cards)
-	fmt.Printf("%s\n", pile.String())
 
 	found := false
 	for _, pileCard := range pile.RetrieveCardsInPile() {
@@ -59,7 +56,6 @@ func TestPile_PickAmountOfCardsFromBottomOfPile(t *testing.T) {
 	}
 	amountOfCards := 4
 
-	fmt.Printf("%s\n", deck.String())
 	pile := NewPile()
 	draw := deck.Draw(6)
 	if !draw.Success {
@@ -68,8 +64,6 @@ func TestPile_PickAmountOfCardsFromBottomOfPile(t *testing.T) {
 	}
 	pile.AddCardsToPile(draw, draw.Cards)
 	backupOfCardsInPile := pile.RetrieveCardsInPile()
-
-	fmt.Printf("PickAmountOfCardsFromBottomOfPile\n%s\n", pile.String())
 
 	cardsFromPile := pile.PickAmountOfCardsFromBottomOfPile(amountOfCards)
 	if cardsFromPile.Remaining != amountOfCards {
@@ -130,7 +124,6 @@ func TestPile_PickAmountOfCardsFromTopOfPile(t *testing.T) {
 	}
 	amountOfCards := 4
 
-	fmt.Printf("%s\n", deck.String())
 	pile := NewPile()
 	draw := deck.Draw(6)
 	if !draw.Success {
@@ -139,8 +132,6 @@ func TestPile_PickAmountOfCardsFromTopOfPile(t *testing.T) {
 	}
 	pile.AddCardsToPile(draw, draw.Cards)
 	backupOfCardsInPile := pile.RetrieveCardsInPile()
-
-	fmt.Printf("PickAmountOfCardsFromTopOfPile\n%s\n", pile.String())
 
 	cardsFromPile := pile.PickAmountOfCardsFromTopOfPile(amountOfCards)
 	if cardsFromPile.Remaining != amountOfCards {
@@ -200,7 +191,6 @@ func TestPile_PickAllCardsFromPile(t *testing.T) {
 		t.FailNow()
 	}
 
-	fmt.Printf("%s\n", deck.String())
 	pile := NewPile()
 	draw := deck.Draw(6)
 	if !draw.Success {
@@ -209,8 +199,6 @@ func TestPile_PickAllCardsFromPile(t *testing.T) {
 	}
 	pile.AddCardsToPile(draw, draw.Cards)
 	backupOfCardsInPile := pile.RetrieveCardsInPile()
-
-	fmt.Printf("PickAllCardsFromPile\n%s\n", pile.String())
 
 	cardsFromPile := pile.PickAllCardsFromPile()
 	amountOfCardsInPile := len(backupOfCardsInPile)
@@ -242,7 +230,6 @@ func TestPile_GetCardsFromPile(t *testing.T) {
 		t.FailNow()
 	}
 
-	fmt.Printf("%s\n", deck.String())
 	pile := NewPile()
 	draw := deck.Draw(amountOfCardsToDraw)
 	if !draw.Success {
@@ -252,12 +239,10 @@ func TestPile_GetCardsFromPile(t *testing.T) {
 
 	cardsToRequestFromPile := make(Cards, 0)
 	if draw.Remaining >= amountOfCardsToDraw {
-		cardsToRequestFromPile = append(cardsToRequestFromPile, draw.Cards[(amountOfCardsToDraw/1)-1])
+		cardsToRequestFromPile = append(cardsToRequestFromPile, draw.Cards[(amountOfCardsToDraw)-1])
 		cardsToRequestFromPile = append(cardsToRequestFromPile, draw.Cards[amountOfCardsToDraw/2])
 	}
 	pile.AddCardsToPile(draw, draw.Cards)
-
-	fmt.Printf("GetCardsFromPile\n%s\n", pile.String())
 
 	cardsFromPile := pile.GetCardsFromPile(cardsToRequestFromPile)
 	if cardsFromPile.Remaining != 2 {
@@ -282,7 +267,6 @@ func TestPile_GetCardsFromPile(t *testing.T) {
 
 func TestShufflePile(t *testing.T) {
 	deck := NewDeckWithJokers(1)
-	t.Logf("Deck is being shuffled\n")
 	draw := deck.Draw(deck.Remaining)
 	pile := NewPile()
 	pile.AddCardsToPile(draw, draw.Cards)
@@ -295,7 +279,6 @@ func TestShufflePile(t *testing.T) {
 
 func TestGetCardAtID(t *testing.T) {
 	deck := NewDeckWithJokers(1)
-	t.Logf("Deck is being shuffled\n")
 	draw := deck.Draw(deck.Remaining)
 	pile := NewPile()
 	pile.AddCardsToPile(draw, draw.Cards)
@@ -320,6 +303,20 @@ func TestGetCardAtID(t *testing.T) {
 	_, err = pile.GetCardAtID(54)
 	if err == nil {
 		t.Logf("Did retrieve a card from the pile for a faulty id.\n")
+		t.FailNow()
+	}
+}
+
+func TestPileString(t *testing.T) {
+	deck := NewDeckWithJokers(1)
+	draw := deck.Draw(deck.Remaining)
+	pile := NewPile()
+	pile.AddCardsToPile(draw, draw.Cards)
+
+	actualString := pile.String()
+	expectedString := fmt.Sprintf("PileID: %s\n%s", pile.PileID, pile.cards.String())
+	if !strings.EqualFold(actualString, expectedString) {
+		t.Logf("expected:[%s] but received:[%s]\n", expectedString, actualString)
 		t.FailNow()
 	}
 }

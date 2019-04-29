@@ -8,7 +8,6 @@ import (
 
 //Card is a type that implements the structure of a Card.
 type Card struct {
-	Image  string `json:"image"`
 	Value  string `json:"value"`
 	Suit   string `json:"suit"`
 	Code   string `json:"code"`
@@ -29,7 +28,6 @@ func newCard(deckID, value, suit string) (card *Card, err error) {
 		card = &Card{
 			DeckID: deckID,
 			Code:   "",
-			Image:  "",
 			Value:  "",
 			Suit:   "",
 			drawn:  false,
@@ -45,11 +43,6 @@ func newCard(deckID, value, suit string) (card *Card, err error) {
 		}
 
 		card.Code = fmt.Sprintf("%s%s", value, suit)
-		if !strings.EqualFold("*", value) && !strings.EqualFold("*", suit) {
-			card.Image = fmt.Sprintf("https://deckofcardsapi.com/static/img/%s.png", card.Code)
-		} else {
-			card.Image = ""
-		}
 	}
 
 	return
@@ -113,15 +106,7 @@ func (z *Card) String() string {
 func (z *Card) draw() *Card {
 
 	z.drawn = true
-	card := &Card{
-		Code:   z.Code,
-		Image:  z.Image,
-		Value:  z.Value,
-		Suit:   z.Suit,
-		drawn:  z.drawn,
-		DeckID: z.DeckID,
-	}
-
+	card := z.cloneCard()
 	return card
 }
 
@@ -129,7 +114,6 @@ func (z *Card) cloneCard() *Card {
 	card := &Card{
 		DeckID: z.DeckID,
 		Code:   z.Code,
-		Image:  z.Image,
 		Value:  z.Value,
 		Suit:   z.Suit,
 		drawn:  z.drawn,
@@ -140,22 +124,10 @@ func (z *Card) cloneCard() *Card {
 
 //Equals function compares two cards with each other.
 func (z *Card) Equals(card *Card) bool {
-	if z.Code != card.Code {
-		return false
+	if z.Code == card.Code && z.Value == card.Value && z.Suit == card.Suit && z.drawn == card.drawn {
+		return true
 	}
-	if z.Image != card.Image {
-		return false
-	}
-	if z.Value != card.Value {
-		return false
-	}
-	if z.Suit != card.Suit {
-		return false
-	}
-	if z.drawn != card.drawn {
-		return false
-	}
-	return true
+	return false
 }
 
 func (z *cardError) Error() string {
