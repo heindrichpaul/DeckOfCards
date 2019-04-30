@@ -29,7 +29,6 @@ func TestNewCard(t *testing.T) {
 }
 
 func cardCreatorHelper(deckID, suit, value string, t *testing.T) {
-	t.Log("Now running " + fmt.Sprintf("%s%s", value, suit) + ": " + time.Now().String())
 	card, err := newCard(deckID, value, suit)
 	if err != nil {
 		t.Logf("Failed to create card for: %s%s\n", value, suit)

@@ -38,3 +38,18 @@ func (z *Draw) String() string {
 	return strings.Join(printString, "\n")
 
 }
+
+//AreAllCardsInThisDraw returns true if all the cards in the cards slice are in the draw.
+func (z *Draw) AreAllCardsInThisDraw(cards Cards) bool {
+	for _, cardFromCards := range cards {
+		for d, cardFromDraw := range z.Cards {
+			if cardFromCards.Equals(cardFromDraw) {
+				break
+			}
+			if d == len(z.Cards)-1 && !cardFromCards.Equals(cardFromDraw) {
+				return false
+			}
+		}
+	}
+	return true
+}

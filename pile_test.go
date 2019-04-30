@@ -32,7 +32,6 @@ func TestAddCardsToPile(t *testing.T) {
 		t.FailNow()
 	}
 	pile.AddCardsToPile(draw, draw.Cards)
-
 	found := false
 	for _, pileCard := range pile.RetrieveCardsInPile() {
 		for _, drawCard := range draw.Cards {
