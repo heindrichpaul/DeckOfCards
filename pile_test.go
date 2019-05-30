@@ -319,3 +319,25 @@ func TestPileString(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+func TestPileUnmarshal(t *testing.T) {
+	pile := NewPile()
+	marshalPile, err := pile.Marshal()
+	if err != nil {
+		t.Logf("There was an error marshaling the pile: %s\n", err.Error())
+		t.FailNow()
+	}
+	upile, err := UnmarshalPile(marshalPile)
+	if err != nil {
+		t.Logf("There was an error unmarshaling the pile: %s\n", err.Error())
+		t.FailNow()
+	}
+	if pile.PileID != upile.PileID {
+		t.Logf("The PileID's do not match\n")
+		t.FailNow()
+	}
+	if pile.Remaining != upile.Remaining {
+		t.Logf("The Remaining cards do not match\n")
+		t.FailNow()
+	}
+}

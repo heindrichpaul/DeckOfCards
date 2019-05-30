@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	jsoniter "github.com/json-iterator/go"
 	"github.com/twinj/uuid"
 )
 
@@ -174,4 +175,18 @@ func (z *Pile) GetCardAtID(index int) (*Draw, error) {
 	draw.Remaining = len(draw.Cards)
 	draw.Success = true
 	return draw, nil
+}
+
+//UnmarshalPile unmarshals a byte array into a pointer to a Pile for internal use.
+func UnmarshalPile(data []byte) (*Pile, error) {
+	var r Pile
+	json := jsoniter.ConfigCompatibleWithStandardLibrary
+	err := json.Unmarshal(data, &r)
+	return &r, err
+}
+
+//Marshal marshals a pointer to a Pile into a byte array for transmission.
+func (z *Pile) Marshal() ([]byte, error) {
+	json := jsoniter.ConfigCompatibleWithStandardLibrary
+	return json.Marshal(z)
 }
