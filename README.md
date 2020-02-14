@@ -26,6 +26,10 @@ With a [correctly configured](https://golang.org/doc/install#testing) Go toolcha
 go get -u github.com/heindrichpaul/deckofcards
 ```
 
+## Contribution
+
+If you want to contribute to the project and make it better, your help is very welcome.
+
 ## License
 
 MIT License. See the LICENSE file for details.
